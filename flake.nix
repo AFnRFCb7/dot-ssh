@@ -29,8 +29,8 @@
 												if [ ! -f ${ token } ]
 												then
 													mkdir --parents /tmp/resources
-													cat > ${ token } <<EOF
-												EOF
+cat > ${ token } <<EOF
+EOF
 													chmod 0400 ${ token }
 												fi
 												echo ${ token }
