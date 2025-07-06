@@ -9,6 +9,9 @@
 						nixpgs ,
 						system
 					} @primary :
+						let
+										pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
+						in
 						pkgs.writeShellApplication
 							{
 								name = "application" ;
@@ -20,7 +23,6 @@
 												let
 													mapper = "\t${ name }\t${ value }" ;
 													in builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper value ) ) ;
-										pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
 										token = "/tmp/resources/${ builtins.hashString "sha512" primary }" ;
 										in
 											''
