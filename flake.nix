@@ -46,6 +46,6 @@ EOF
 												echo ${ token }
 											'' ;
 							} ;
-					in "${ application }/bin/application" ;;
+					in "${ application }/bin/application" ;
 			} ;
 }
