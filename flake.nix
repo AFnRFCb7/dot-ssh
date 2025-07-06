@@ -30,7 +30,6 @@
 												then
 													mkdir --parents /tmp/resources
 													cat > ${ token } <<EOF
-												${ builtins.conctStringsSep "\n\n\n" ( builtins.attrValues ( builtins.mapAttrs mapper config ) ) }
 												EOF
 													chmod 0400 ${ token }
 												fi
