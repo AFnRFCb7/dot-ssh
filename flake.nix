@@ -22,7 +22,16 @@
 											name : value :
 												let
 													mapper = name : value : "\t${ name }\t${ value }" ;
-													in builtins.concatStringsSep "\n" ( builtins.concatLists [ [ "HOST ${ name }" [ ( builtins.attrValues ( builtins.mapAttrs mapper value ) ] ) ) ;
+													in
+														builtins.concatStringsSep
+															"\n"
+															(
+																builtins.concatLists
+																	[
+																		[ "HOST ${ name }" ]
+																		( builtins.attrValues ( builtins.mapAttrs mapper value ) )
+																	]
+															) ;
 										token = "/tmp/resources/${ builtins.hashString "sha512" ( builtins.toJSON primary ) }" ;
 										in
 											''
