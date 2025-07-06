@@ -11,7 +11,7 @@
 					} @primary :
 						let
 										pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
-						in
+						application =
 						pkgs.writeShellApplication
 							{
 								name = "application" ;
@@ -46,5 +46,6 @@ EOF
 												echo ${ token }
 											'' ;
 							} ;
+					in "${ application }/bin/application" ;;
 			} ;
 }
