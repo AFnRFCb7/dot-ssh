@@ -21,7 +21,7 @@
 										mapper =
 											name : value :
 												let
-													mapper = "\t${ name }\t${ value }" ;
+													mapper = name : value : "\t${ name }\t${ value }" ;
 													in builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper value ) ) ;
 										token = "/tmp/resources/${ builtins.hashString "sha512" ( builtins.toJSON primary ) }" ;
 										in
