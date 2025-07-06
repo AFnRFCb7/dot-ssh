@@ -6,7 +6,7 @@
 				lib.implementation =
 					{
 						config ,
-						nixpgs ,
+						nixpkgs ,
 						system
 					} @primary :
 						let
