@@ -21,7 +21,7 @@
 										mapper =
 											name : value :
 												let
-													mapper = name : value : "\t${ builtins.replaceString [ "-" ] [ "" ] name }\t\t\t${ value }" ;
+													mapper = name : value : "\t${ builtins.replaceStrings [ "-" ] [ "" ] name }\t\t\t${ value }" ;
 													in
 														builtins.concatStringsSep
 															"\n"
