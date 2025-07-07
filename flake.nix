@@ -21,7 +21,7 @@
 										mapper =
 											name : value :
 												let
-													mapper = name : value : "\t${ name }\t${ value }" ;
+													mapper = name : value : "\t${ name }\t\t\t${ value }" ;
 													in
 														builtins.concatStringsSep
 															"\n"
