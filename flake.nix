@@ -103,8 +103,7 @@
                                                                                 primary ;
                                                                         in
                                                                             ''
-                                                                                ${ builtins.concatStringsSep "/" ( builtins.attrValues variables ) }
-                                                                                cat ${ builtins.toFile "config" ( builtins.concatStringsSep "/n" ( builtins.attrValues configuration ) ) } > /mount/dot-ssh
+                                                                                touch /mount/dot-ssh
                                                                                 chmod 0400 /mount/dot-ssh
                                                                             '' ;
                                                             } ;
