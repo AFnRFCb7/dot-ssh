@@ -82,7 +82,7 @@
                                                                         bash-name = path : builtins.replacesStrings [ "-" "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s" "u" "v" "w" "x" "y" "z" ] [ "_" "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "Y" "Z" ] ( builtins.concatStringsSep "" ( builtins.concatLists [ [ "-" ] path ] ) ) ;
                                                                         configuration =
                                                                             let
-                                                                                string = path : value : [ "${ configuration-name path } ${ bash-name path }" ] ;
+                                                                                string = path : value : [ "${ configuration-name path }" ] ;
                                                                                 in
                                                                                     visitor
                                                                                         {
