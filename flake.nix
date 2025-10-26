@@ -106,7 +106,8 @@
                                                                                             lambda = export ;
                                                                                             set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
                                                                                             string = export ;
-                                                                                        } ;
+                                                                                        }
+                                                                                        primary ;
                                                                         variables =
                                                                             visitor
                                                                                 {
