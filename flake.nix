@@ -100,13 +100,13 @@
                                                                                     bool = path : value : [ ( builtins.concatStringsSep "" [ ( bash-name path ) "=" ( if value then "Yes" else "No" ) ] ) ] ;
                                                                                     int = path : value : [ ( builtins.concatStringsSep "" [ ( bash-name path ) "=" ( builtins.toString value ) ] ) ] ;
                                                                                     set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
-                                                                                    string = path : value : [ ( builtins.concatStringsSep "" [ ( bash-name path ) "=" value ] ) ] ;
+                                                                                    string = path : value : [ ( builtins.concatStringsSep "" [ ( bash-name path ) "=\"" value "\"" ] ) ] ;
                                                                                 }
                                                                                 primary ;
                                                                         in
                                                                             ''
-                                                                                cat ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues ( configuration ) ) ) ) } > /mount/dot-ssh
-                                                                                # ${ builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues ( configuration ) ) ) }
+                                                                                cat ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues ( variables ) ) ) ) } > /mount/dot-ssh
+                                                                                # ${ builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues ( variables ) ) ) }
                                                                                 # cat ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues configuration ) ) ) } > /mount/dot-ssh
                                                                                 chmod 0400 /mount/dot-ssh
                                                                             '' ;
