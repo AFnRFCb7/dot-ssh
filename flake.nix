@@ -6,6 +6,7 @@
                 lib =
                     {
                         coreutils ,
+                        gettext ,
                         visitor ,
                         writeShellApplication
                     } :
@@ -76,7 +77,7 @@
                                                         writeShellApplication
                                                             {
                                                                 name = "init" ;
-                                                                runtimeInputs = [ coreutils ] ;
+                                                                runtimeInputs = [ coreutils gettext ] ;
                                                                 text =
                                                                     let
                                                                         bash-name = path : builtins.replaceStrings [ "-" "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s" "t" "u" "v" "w" "x" "y" "z" ] [ "_" "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" ] ( builtins.concatStringsSep "" path ) ;
@@ -93,7 +94,19 @@
                                                                                             string = string ;
                                                                                         }
                                                                                         primary ;
-                                                                        configuration-name = path : builtins.replaceStrings [ "-a" "-b" "-c" "-d" "-e" "-f" "-g" "-h" "-i" "-j" "-k" "-l" "-m" "-n" "-o" "-p" "-q" "-r" "-s" "-t" "-u" "-v" "-w" "-x" "-y" "-z" ] [ "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" ] ( builtins.concatStringsSep "" ( builtins.concatLists [ [ "-" ] path ] ) );
+                                                                        configuration-name = path : builtins.replaceStrings [ "-a" "-b" "-c" "-d" "-e" "-f" "-g" "-h" "-i" "-j" "-k" "-l" "-m" "-n" "-o" "-p" "-q" "-r" "-s" "-t" "-u" "-v" "-w" "-x" "-y" "-z" ] [ "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" ] ( builtins.concatStringsSep "" ( builtins.concatLists [ [ "-" ] path ] ) ) ;
+                                                                        exports =
+                                                                            let
+                                                                                export = path : value : [ "export ${ bash-name path }" ] ;
+                                                                                in
+                                                                                    visitor
+                                                                                        {
+                                                                                            bool = export ;
+                                                                                            int = export ;
+                                                                                            lambda = export ;
+                                                                                            set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
+                                                                                            string = export ;
+                                                                                        } ;
                                                                         variables =
                                                                             visitor
                                                                                 {
@@ -106,7 +119,8 @@
                                                                         in
                                                                             ''
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues ( variables ) ) ) }
-                                                                                cat ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues configuration ) ) ) } > /mount/dot-ssh
+                                                                                ${ builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues ( exports ) ) ) }
+                                                                                envsubst < ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues configuration ) ) ) } > /mount/dot-ssh
                                                                                 chmod 0400 /mount/dot-ssh
                                                                             '' ;
                                                             } ;
