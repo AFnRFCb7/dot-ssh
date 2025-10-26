@@ -105,8 +105,9 @@
                                                                                 primary ;
                                                                         in
                                                                             ''
+                                                                                cat ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues ( configuration ) ) ) ) } > /mount/dot-ssh
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues ( configuration ) ) ) }
-                                                                                cat ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues configuration ) ) ) } > /mount/dot-ssh
+                                                                                # cat ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues configuration ) ) ) } > /mount/dot-ssh
                                                                                 chmod 0400 /mount/dot-ssh
                                                                             '' ;
                                                             } ;
