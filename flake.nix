@@ -104,7 +104,7 @@
                                                                                 primary ;
                                                                         in
                                                                             ''
-                                                                                cat ${ builtins.toFile "config" ( builtins.concatStringsSep "" configuration ) } > /mount/dot-ssh
+                                                                                cat ${ builtins.toFile "config" ( builtins.concatStringsSep "" ( builtins.attrValues configuration ) ) } > /mount/dot-ssh
                                                                                 chmod 0400 /mount/dot-ssh
                                                                             '' ;
                                                             } ;
