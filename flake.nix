@@ -89,6 +89,7 @@
                                                                                             bool = string ;
                                                                                             int = string ;
                                                                                             lambda = string ;
+                                                                                            set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
                                                                                             string = string ;
                                                                                         }
                                                                                         primary ;
@@ -103,7 +104,7 @@
                                                                                 primary ;
                                                                         in
                                                                             ''
-                                                                                cat ${ builtins.toFile "config" ( builtins.concatStringsSep "" ( builtins.attrValues configuration ) ) } > /mount/dot-ssh
+                                                                                cat ${ builtins.toFile "config" ( builtins.concatStringsSep "" configuration ) } > /mount/dot-ssh
                                                                                 chmod 0400 /mount/dot-ssh
                                                                             '' ;
                                                             } ;
