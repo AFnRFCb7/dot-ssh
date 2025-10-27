@@ -89,7 +89,11 @@
                                                                                         {
                                                                                             bool = string ;
                                                                                             int = string ;
-                                                                                            lambda = string ;
+                                                                                            lambda =
+                                                                                                path : value :
+                                                                                                    let
+                                                                                                        x = value { resources = resources ; self = self ; } ;
+                                                                                                        in [ "${ configuration-name path } ${ builtins.concatStringsSep "" [ "$" "{" ( bash-name path ) "}" ] }/${ x.file }" ] ;
                                                                                             set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
                                                                                             string = string ;
                                                                                         }
