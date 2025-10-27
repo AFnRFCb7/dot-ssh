@@ -93,7 +93,7 @@
                                                                                                 path : value :
                                                                                                     let
                                                                                                         x = value { resources = resources ; self = self ; } ;
-                                                                                                        in [ "${ configuration-name path } ${ builtins.concatStringsSep "" [ "$" "{" ( bash-name path ) "}" ] }/${ x.file x.directory }" ] ;
+                                                                                                        in [ "${ configuration-name path } ${ builtins.concatStringsSep "" [ "$" "{" ( bash-name path ) "}" ] }" ] ;
                                                                                             set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
                                                                                             string = string ;
                                                                                         }
