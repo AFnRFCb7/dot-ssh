@@ -114,9 +114,10 @@
                                                                                     bool = path : value : [ ( builtins.concatStringsSep "" [ ( bash-name path ) "=" ( if value then "Yes" else "No" ) ] ) ] ;
                                                                                     int = path : value : [ ( builtins.concatStringsSep "" [ ( bash-name path ) "=" ( builtins.toString value ) ] ) ] ;
                                                                                     lambda =
-                                                                                        let
-                                                                                            x = value { resources = resources ; self = self ; } ;
-                                                                                            in path : value : [ ( builtins.concatStringsSep "" [ ( bash-name path ) "=" x.directory ] ) ] ;
+                                                                                        path : value :
+                                                                                            let
+                                                                                                x = value { resources = resources ; self = self ; } ;
+                                                                                            in [ ( builtins.concatStringsSep "" [ ( bash-name path ) "=" x.directory ] ) ] ;
                                                                                     set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
                                                                                     string = path : value : [ ( builtins.concatStringsSep "" [ ( bash-name path ) "=\"" value "\"" ] ) ] ;
                                                                                 }
