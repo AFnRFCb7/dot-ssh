@@ -112,6 +112,19 @@
                                                                                             string = export ;
                                                                                         }
                                                                                         primary ;
+                                                                        links =
+                                                                            let
+                                                                                nothing = path : value : [ ] ;
+                                                                                in
+                                                                                    visitor
+                                                                                        {
+                                                                                            bool = nothing ;
+                                                                                            int = nothing ;
+                                                                                            lambda = path : value : [ "ln --symbolic ${ bash-name path } /links" ];
+                                                                                            set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
+                                                                                            string = nothing ;
+                                                                                        }
+                                                                                        primary ;
                                                                         variables =
                                                                             visitor
                                                                                 {
