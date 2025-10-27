@@ -143,6 +143,7 @@
                                                                         in
                                                                             ''
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues ( variables ) ) ) }
+                                                                                ${ builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues ( links ) ) ) }
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues ( exports ) ) ) }
                                                                                 envsubst < ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues configuration ) ) ) } > /mount/dot-ssh
                                                                                 chmod 0400 /mount/dot-ssh
