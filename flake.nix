@@ -94,7 +94,7 @@
                                                                                                     let
                                                                                                         x = value { resources = resources ; self = self ; } ;
                                                                                                         in [ "${ configuration-name path } ${ builtins.concatStringsSep "" [ "$" "{" ( bash-name path ) "}" ] }/${ x.file }" ] ;
-                                                                                            set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
+                                                                                            set = path : set : builtins.concatStringsSep "\n" [ "HostName ${ host-name path }" ( builtins.concatStringsSep "\n" ( builtins.map ( line : "  ${ line }" ) ( builtins.concatLists ( builtins.attrValues set ) ) ) ) ] ;
                                                                                             string = string ;
                                                                                         }
                                                                                         primary ;
@@ -112,6 +112,7 @@
                                                                                             string = export ;
                                                                                         }
                                                                                         primary ;
+                                                                        host-name = path : builtins.elemAt path 0 ;
                                                                         links =
                                                                             let
                                                                                 nothing = path : value : [ ] ;
