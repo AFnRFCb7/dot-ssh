@@ -104,7 +104,7 @@
                                                                                                                     string = string true ;
                                                                                                                 }
                                                                                                                 value ;
-                                                                                                in builtins.concatStringsSep "\n" [ ( "HostName ${ name }" ) ] ;
+                                                                                                in [ ( builtins.concatStringsSep "\n" [ ( "HostName ${ name }" ) ] ) ] ;
                                                                             in builtins.mapAttrs mapper configuration ;
                                                                         in
                                                                             ''
