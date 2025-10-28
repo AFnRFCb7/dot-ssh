@@ -161,7 +161,6 @@
                                                                                             let
                                                                                                 x = value { resources = resources ; self = self ; } ;
                                                                                             in [ ( builtins.concatStringsSep "" [ ( bash-name path ) "=" x.directory ] ) ] ;
-                                                                                    set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
                                                                                     string = path : value : [ ( builtins.concatStringsSep "" [ ( bash-name path ) "=\"" value "\"" ] ) ] ;
                                                                                 }
                                                                                 primary ;
