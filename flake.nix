@@ -24,7 +24,7 @@
                                                                 runtimeInputs = [ coreutils gettext ] ;
                                                                 text =
                                                                     let
-                                                                        bash-name = host-name : attribute-name : builtins.concatStringsSep "" ( builtins.hashString "sha512" ( builtins.concatStringsSep "" [ host-name attribute-name ] ) ) ;
+                                                                        bash-name = host-name : attribute-name : builtins.concatStringsSep "" [ "V" ( builtins.hashString "sha512" ( builtins.concatStringsSep "c80c2687f8aa97ca4b3b44626d06d366a93fa8c67de5cf52d565b17b48334603aad79b5cb3d293f54f6084df628e343f71f4704bff525c840e8435e9fa1cad27" [ host-name attribute-name ] ) ] ;
                                                                         configuration =
                                                                             let
                                                                                 mapper =
@@ -85,31 +85,30 @@
                                                                                             strict-host-key-checking ? null ,
                                                                                             user ? null ,
                                                                                             user-known-hosts-file ? null
-                                                                                        } @value :
+                                                                                        } @configuration :
                                                                                             let
-                                                                                                configuration =
+                                                                                                dot-ssh =
                                                                                                     let
-                                                                                                        string = path : value : [ "${ configuration-name path } ${ builtins.concatStringsSep "" [ "$" "{" ( bash-name path ) "}" ] }" ] ;
+                                                                                                        string =
+                                                                                                            path : value : variable :
+                                                                                                                let
+                                                                                                                    expression = builtins.replaceStrings [ "-a" "-b" "-c" "-d" "-e" "-f" "-g" "-h" "-i" "-j" "-k" "-l" "-m" "-n" "-o" "-p" "-q" "-r" "-s" "-t" "-u" "-v" "-w" "-x" "-y" "-z" ] [ "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" ] ( builtins.concatStringsSep "" [ "-" ( builtins.elemAt path 0 ) ] ) ;
+                                                                                                                    value = builtins.concatStringsSep "" [ "$" "{" ( bash-name name ( builtins.elemAt path 0 ) "}" ] ;
+                                                                                                                    in [ "${ dot-ssh-name } ${ value }" ] ;
                                                                                                         in
                                                                                                             visitor
                                                                                                                 {
-                                                                                                                    bool = string ;
-                                                                                                                    int = string ;
-                                                                                                                    lambda =
-                                                                                                                        path : value :
-                                                                                                                            let
-                                                                                                                                x = value { resources = resources ; self = self ; } ;
-                                                                                                                                in [ "${ configuration-name path } ${ builtins.concatStringsSep "" [ "$" "{" ( bash-name path ) "}" ] }/${ x.file }" ] ;
-                                                                                                                    set = path : set : builtins.concatStringsSep "\n" [ "HostName ${ host-name path }" ( builtins.concatStringsSep "\n" ( builtins.map ( line : "  ${ line }" ) ( builtins.concatLists ( builtins.attrValues set ) ) ) ) ] ;
-                                                                                                                    string = string ;
+                                                                                                                    bool = string true ;
+                                                                                                                    int = string true ;
+                                                                                                                    lambda = string false ;
+                                                                                                                    string = string true ;
                                                                                                                 }
                                                                                                                 value ;
-                                                                                                in builtins.concatStringsSep "\n" [ ( "HostName ${ name }" ) ( builtins.concatStringsSep "\n" ( builtins.map ( line : "  ${ line }" ) configuration ) ) ] ;
-                                                                            in builtins.mapAttrs mapper primary ;
-                                                                        configuration-name = path : builtins.replaceStrings [ "-a" "-b" "-c" "-d" "-e" "-f" "-g" "-h" "-i" "-j" "-k" "-l" "-m" "-n" "-o" "-p" "-q" "-r" "-s" "-t" "-u" "-v" "-w" "-x" "-y" "-z" ] [ "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" ] ( builtins.concatStringsSep "" ( builtins.concatLists [ [ "-" ] path ] ) ) ;
+                                                                                                in builtins.concatStringsSep "\n" [ ( "HostName ${ name }" ) ( builtins.concatStringsSep "\n" ( builtins.map ( line : "  ${ line }" ) dot-ssh ) ) ] ;
+                                                                            in builtins.mapAttrs mapper configuration ;
                                                                         in
                                                                             ''
-                                                                                envsubst < ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues configuration ) ) ) } > /mount/dot-ssh
+                                                                                envsubst < ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues dot-ssh ) ) ) } > /mount/dot-ssh
                                                                                 chmod 0400 /mount/dot-ssh
                                                                             '' ;
                                                             } ;
