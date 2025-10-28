@@ -38,6 +38,7 @@
                                                                                             bool = string ( value : if value then "Yes" else "No" ) ;
                                                                                             int = string builtins.toString ;
                                                                                             lambda = string fun ;
+                                                                                            set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
                                                                                             string = string builtins.toString ;
                                                                                         }
                                                                                         configuration ;
