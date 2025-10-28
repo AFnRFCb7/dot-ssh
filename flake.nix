@@ -31,7 +31,7 @@
                                                                                         let
                                                                                             x = value { resources = resources ; self = self ; } ;
                                                                                             in x.directory ;
-                                                                                string = path : value : fun : builtins.concatStringsSep "" [ ( bash-name ( builtins.elemAt path 0 ) ( builtins.elemAt 1 ) ) "=" ( fun value ) ]
+                                                                                string = path : value : fun : builtins.concatStringsSep "" [ ( bash-name ( builtins.elemAt path 0 ) ( builtins.elemAt 1 ) ) "=" ( fun value ) ] ;
                                                                                 in
                                                                                     visit
                                                                                         {
