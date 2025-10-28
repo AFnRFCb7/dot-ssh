@@ -12,7 +12,7 @@
                     } :
                         let
                             implementation =
-                                primary :
+                                configuration :
                                     {
                                         init =
                                             { resources , self } :
@@ -105,7 +105,7 @@
                                                                                                                 }
                                                                                                                 value ;
                                                                                                 in builtins.concatStringsSep "\n" [ ( "HostName ${ name }" ) ( builtins.concatStringsSep "\n" ( builtins.map ( line : "  ${ line }" ) dot-ssh ) ) ] ;
-                                                                            in builtins.mapAttrs mapper configuration ;
+                                                                            in builtins.mapAttrs mapper value ;
                                                                         in
                                                                             ''
                                                                                 envsubst < ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues dot-ssh ) ) ) } > /mount/dot-ssh
