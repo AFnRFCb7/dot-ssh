@@ -24,7 +24,7 @@
                                                                 runtimeInputs = [ coreutils gettext ] ;
                                                                 text =
                                                                     let
-                                                                        bash-name = path : builtins.concatStringsSep "" [ "V" ( builtins.hashString "sha512" ( builtins.concatStringsSep "_" ( builtins.map builtins.toString path ) ) ) ] ;
+                                                                        bash-name = host-name : attribute-name : builtins.concatStringsSep "" ( builtins.hashString "sha512" ( builtins.concatStringsSep "" [ host-name attribute-name ] ) ) ;
                                                                         configuration =
                                                                             let
                                                                                 mapper =
@@ -106,69 +106,9 @@
                                                                                                                 value ;
                                                                                                 in builtins.concatStringsSep "\n" [ ( "HostName ${ name }" ) ( builtins.concatStringsSep "\n" ( builtins.map ( line : "  ${ line }" ) configuration ) ) ] ;
                                                                             in builtins.mapAttrs mapper primary ;
-                                                                        configuration2 =
-                                                                            let
-                                                                                string = path : value : [ "${ configuration-name path } ${ builtins.concatStringsSep "" [ "$" "{" ( bash-name path ) "}" ] }" ] ;
-                                                                                in
-                                                                                    visitor
-                                                                                        {
-                                                                                            bool = string ;
-                                                                                            int = string ;
-                                                                                            lambda =
-                                                                                                path : value :
-                                                                                                    let
-                                                                                                        x = value { resources = resources ; self = self ; } ;
-                                                                                                        in [ "${ configuration-name path } ${ builtins.concatStringsSep "" [ "$" "{" ( bash-name path ) "}" ] }/${ x.file }" ] ;
-                                                                                            set = path : set : builtins.concatStringsSep "\n" [ "HostName ${ host-name path }" ( builtins.concatStringsSep "\n" ( builtins.map ( line : "  ${ line }" ) ( builtins.concatLists ( builtins.attrValues set ) ) ) ) ] ;
-                                                                                            string = string ;
-                                                                                        }
-                                                                                        primary ;
                                                                         configuration-name = path : builtins.replaceStrings [ "-a" "-b" "-c" "-d" "-e" "-f" "-g" "-h" "-i" "-j" "-k" "-l" "-m" "-n" "-o" "-p" "-q" "-r" "-s" "-t" "-u" "-v" "-w" "-x" "-y" "-z" ] [ "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" ] ( builtins.concatStringsSep "" ( builtins.concatLists [ [ "-" ] path ] ) ) ;
-                                                                        exports =
-                                                                            let
-                                                                                export = path : value : [ "export ${ bash-name path }" ] ;
-                                                                                in
-                                                                                    visitor
-                                                                                        {
-                                                                                            bool = export ;
-                                                                                            int = export ;
-                                                                                            lambda = export ;
-                                                                                            set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
-                                                                                            string = export ;
-                                                                                        }
-                                                                                        primary ;
-                                                                        host-name = path : builtins.elemAt path 0 ;
-                                                                        links =
-                                                                            let
-                                                                                nothing = path : value : [ ] ;
-                                                                                in
-                                                                                    visitor
-                                                                                        {
-                                                                                            bool = nothing ;
-                                                                                            int = nothing ;
-                                                                                            lambda = path : value : [ "ln --symbolic ${ bash-name path } /links" ];
-                                                                                            set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
-                                                                                            string = nothing ;
-                                                                                        }
-                                                                                        primary ;
-                                                                        variables =
-                                                                            visitor
-                                                                                {
-                                                                                    bool = path : value : [ ( builtins.concatStringsSep "" [ ( bash-name path ) "=" ( if value then "Yes" else "No" ) ] ) ] ;
-                                                                                    int = path : value : [ ( builtins.concatStringsSep "" [ ( bash-name path ) "=" ( builtins.toString value ) ] ) ] ;
-                                                                                    lambda =
-                                                                                        path : value :
-                                                                                            let
-                                                                                                x = value { resources = resources ; self = self ; } ;
-                                                                                            in [ ( builtins.concatStringsSep "" [ ( bash-name path ) "=" x.directory ] ) ] ;
-                                                                                    string = path : value : [ ( builtins.concatStringsSep "" [ ( bash-name path ) "=\"" value "\"" ] ) ] ;
-                                                                                }
-                                                                                primary ;
                                                                         in
                                                                             ''
-                                                                                ${ builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues ( variables ) ) ) }
-                                                                                ${ builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues ( links ) ) ) }
-                                                                                ${ builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues ( exports ) ) ) }
                                                                                 envsubst < ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues configuration ) ) ) } > /mount/dot-ssh
                                                                                 chmod 0400 /mount/dot-ssh
                                                                             '' ;
