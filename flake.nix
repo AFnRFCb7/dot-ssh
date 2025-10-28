@@ -41,6 +41,7 @@
                                                                                                         bool = string ( value : if value then "Yes" else "No" ) ;
                                                                                                         int = string builtins.toString ;
                                                                                                         lambda = string fun ;
+                                                                                                        set = builtins.throw "WTF" ;
                                                                                                         string = string builtins.toString ;
                                                                                                     }
                                                                                                     value ;
