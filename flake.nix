@@ -26,22 +26,25 @@
                                                                     let
                                                                         bash =
                                                                             let
-                                                                                fun =
-                                                                                    value :
+                                                                                mapper =
+                                                                                    name : value :
                                                                                         let
-                                                                                            x = value { resources = resources ; self = self ; } ;
-                                                                                            in x.directory ;
-                                                                                string = path : value : fun : builtins.concatStringsSep "" [ ( bash-name ( builtins.elemAt path 0 ) ( builtins.elemAt 1 ) ) "=" ( fun value ) ] ;
-                                                                                in
-                                                                                    visitor
-                                                                                        {
-                                                                                            bool = string ( value : if value then "Yes" else "No" ) ;
-                                                                                            int = string builtins.toString ;
-                                                                                            lambda = string fun ;
-                                                                                            set = path : set : builtins.concatLists ( builtins.concatLists ( builtins.attrValues set ) ) ;
-                                                                                            string = string builtins.toString ;
-                                                                                        }
-                                                                                        configuration ;
+                                                                                            fun =
+                                                                                                value :
+                                                                                                    let
+                                                                                                        x = value { resources = resources ; self = self ; } ;
+                                                                                                        in x.directory ;
+                                                                                            string = path : value : fun : [ ( builtins.concatStringsSep "" [ ( bash-name ( builtins.elemAt path 0 ) ( builtins.elemAt 1 ) ) "=" ( fun value ) ] ) ];
+                                                                                            in
+                                                                                                visitor
+                                                                                                    {
+                                                                                                        bool = string ( value : if value then "Yes" else "No" ) ;
+                                                                                                        int = string builtins.toString ;
+                                                                                                        lambda = string fun ;
+                                                                                                        string = string builtins.toString ;
+                                                                                                    }
+                                                                                                    value ;
+                                                                                in builtins.concatLists ( builtins.attrValues ( builtins.mapAttrs mapper configuration ) ) ;
                                                                         bash-name = host-name : attribute-name : builtins.concatStringsSep "" [ "V" ( builtins.hashString "sha512" ( builtins.concatStringsSep "c80c2687f8aa97ca4b3b44626d06d366a93fa8c67de5cf52d565b17b48334603aad79b5cb3d293f54f6084df628e343f71f4704bff525c840e8435e9fa1cad27" [ host-name attribute-name ] ) ) ] ;
                                                                         dot-ssh =
                                                                             let
@@ -126,7 +129,7 @@
                                                                             in builtins.mapAttrs mapper configuration ;
                                                                         in
                                                                             ''
-                                                                                ${ builtins.concatStringsSep "\n" ( builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues bash ) ) ) }
+                                                                                ${ builtins.concatStringsSep "\n" bash ) }
                                                                                 envsubst < ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues dot-ssh ) ) ) } > /mount/dot-ssh
                                                                                 chmod 0400 /mount/dot-ssh
                                                                             '' ;
