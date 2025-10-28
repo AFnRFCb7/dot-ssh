@@ -85,7 +85,7 @@
                                                                                             strict-host-key-checking ? null ,
                                                                                             user ? null ,
                                                                                             user-known-hosts-file ? null
-                                                                                        } @configuration :
+                                                                                        } @value :
                                                                                             let
                                                                                                 dot-ssh =
                                                                                                     let
