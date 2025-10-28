@@ -137,6 +137,7 @@
                                                                                             string = export ;
                                                                                         }
                                                                                         primary ;
+                                                                        host-name = path : builtins.elemAt path 0 ;
                                                                         links =
                                                                             let
                                                                                 nothing = path : value : [ ] ;
