@@ -125,6 +125,7 @@
                                                                             in builtins.mapAttrs mapper configuration ;
                                                                         in
                                                                             ''
+                                                                                ${ builtins.concatStringsSep "\n" ( builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues bash ) ) ) }
                                                                                 envsubst < ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues dot-ssh ) ) ) } > /mount/dot-ssh
                                                                                 chmod 0400 /mount/dot-ssh
                                                                             '' ;
