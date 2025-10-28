@@ -33,7 +33,7 @@
                                                                                             in x.directory ;
                                                                                 string = path : value : fun : builtins.concatStringsSep "" [ ( bash-name ( builtins.elemAt path 0 ) ( builtins.elemAt 1 ) ) "=" ( fun value ) ] ;
                                                                                 in
-                                                                                    visiter
+                                                                                    visitor
                                                                                         {
                                                                                             bool = string ( value : if value then "Yes" else "No" ) ;
                                                                                             int = string builtins.toString ;
