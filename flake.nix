@@ -145,7 +145,22 @@
                                                                                                             value ;
                                                                                             in builtins.concatStringsSep "\n" ( builtins.attrValues v ) ;
                                                                                 in builtins.mapAttrs mapper configuration ;
-
+                                                                        roots =
+                                                                            let
+                                                                                mapper =
+                                                                                    host-name : value :
+                                                                                        let
+                                                                                            v =
+                                                                                                visitor
+                                                                                                    {
+                                                                                                        bool = path : value : [ ] ;
+                                                                                                        int = path : value : [ ] ;
+                                                                                                        lambda = path : value [ "# root here" ] ;
+                                                                                                        string = path : value [ ] ;
+                                                                                                    }
+                                                                                                    value ;
+                                                                                            in builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues v ) ) ;
+                                                                                in builtins.mapAttrs mapper configuration ;
                                                                         in
                                                                             ''
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues bash ) }
