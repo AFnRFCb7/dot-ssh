@@ -129,7 +129,7 @@
                                                                                                                                         string = path : value : "  ${ attribute-name path } ${ builtins.concatStringsSep "" [ "$" "{" ( bash-name host-name ( builtins.elemAt path 0 ) ) "}" ] }"  ;
                                                                                                                                     }
                                                                                                                                     host-config ;
-                                                                                                                    in builtins.trace ( builtins.toJSON { host-name = host-name ; host-config = host-config ; } ) ( builtins.concatStringsSep "\n" ( builtins.attrValues v ) ) ;
+                                                                                                                    in builtins.trace ( builtins.toJSON { host-name = host-name ; host-config = builtins.attrNames host-config ; } ) ( builtins.concatStringsSep "\n" ( builtins.attrValues v ) ) ;
                                                                                                         in builtins.mapAttrs mapper configuration ;
                                                                                                 in [ ( builtins.concatStringsSep "\n" [ ( "HostName ${ name }" ) ( builtins.concatStringsSep "\n" ( builtins.attrValues dot-ssh-config ) ) ] ) ] ;
                                                                             in builtins.mapAttrs mapper configuration ;
