@@ -34,11 +34,11 @@
                                                                                                     {
                                                                                                         bool = path : value : builtins.concatStringsSep "" [ ( bash-name host-name ( builtins.elemAt path 0 ) ) "=" ( if value then "Yes" else "No" ) ] ;
                                                                                                         int = path : value : builtins.concatStringsSep "" [ ( bash-name host-name ( builtins.elemAt path 0 ) ) "=" ( builtins.toJSON value ) ] ;
-                                                                                                        lambda = path : value : "LAMBDA" ;
-                                                                                                            # path : value :
-                                                                                                            #     let
-                                                                                                            #         x = value { resources = resources ; self = self ; } ;
-                                                                                                            #         in builtins.concatStringsSep "" [ ( bash-name host-name ( builtins.elemAt path 0 ) ) "=" x.directory ] ;
+                                                                                                        lambda =
+                                                                                                            path : value :
+                                                                                                                let
+                                                                                                                    x = value { resources = resources ; self = self ; } ;
+                                                                                                                    in builtins.concatStringsSep "" [ ( bash-name host-name ( builtins.elemAt path 0 ) ) "=" x.directory ] ;
                                                                                                         string = path : value : builtins.concatStringsSep "" [ ( bash-name host-name ( builtins.elemAt path 0 ) ) "=" ( builtins.toJSON value) ] ;
                                                                                                     }
                                                                                                     value ;
