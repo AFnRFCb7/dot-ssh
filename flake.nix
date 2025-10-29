@@ -38,7 +38,7 @@
                                                                                                             path : value :
                                                                                                                 let
                                                                                                                     x = value { resources = resources ; self = self ; } ;
-                                                                                                                    in builtins.concatStringsSep "" [ ( bash-name host-name ( builtins.elemAt path 0 ) ) "=" x.directory ] ;
+                                                                                                                    in builtins.concatStringsSep "" [ "#" ( bash-name host-name ( builtins.elemAt path 0 ) ) "=" x.directory ] ;
                                                                                                         string = path : value : builtins.concatStringsSep "" [ ( bash-name host-name ( builtins.elemAt path 0 ) ) "=" ( builtins.toJSON value) ] ;
                                                                                                     }
                                                                                                     value ;
