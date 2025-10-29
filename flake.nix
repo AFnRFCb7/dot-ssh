@@ -32,14 +32,14 @@
                                                                                             v =
                                                                                                 visitor
                                                                                                     {
-                                                                                                        bool = path : value : [ ( builtins.concatStringsSep "" [ ( bash-name host-name ( builtins.elemAt path 0 ) ) ] ) ] ;
-                                                                                                        int = path : value : [ ( builtins.concatStringsSep "" [ ( bash-name host-name ( builtins.elemAt path 0 ) ) ] ) ]  ;
-                                                                                                        lambda = path : value : [ ( builtins.concatStringsSep "" [ ( bash-name host-name ( builtins.elemAt path 0 ) ) ] ) ]  ;
-                                                                                                        string = path : value : [ ( builtins.concatStringsSep "" [ ( bash-name host-name ( builtins.elemAt path 0 ) ) ] ) ]  ;
+                                                                                                        bool = path : value : builtins.concatStringsSep "" [ ( bash-name host-name ( builtins.elemAt path 0 ) ) ] ;
+                                                                                                        int = path : value : builtins.concatStringsSep "" [ ( bash-name host-name ( builtins.elemAt path 0 ) ) ] ;
+                                                                                                        lambda = path : value : builtins.concatStringsSep "" [ ( bash-name host-name ( builtins.elemAt path 0 ) ) ] ;
+                                                                                                        string = path : value : builtins.concatStringsSep "" [ ( bash-name host-name ( builtins.elemAt path 0 ) ) ] ;
                                                                                                     }
                                                                                                     value ;
-                                                                                            # in builtins.concatStringsSep "\n" ( builtins.attrValues v ) ;
-                                                                                            in "# host-name = ${ host-name }" ;
+                                                                                            in builtins.concatStringsSep "\n" ( builtins.attrValues v ) ;
+                                                                                            # in "# host-name = ${ host-name }" ;
                                                                                 in builtins.mapAttrs mapper configuration ;
                                                                         bash-name = host-name : attribute-name : builtins.concatStringsSep "" [ "V" ( builtins.hashString "sha512" ( builtins.concatStringsSep "c80c2687f8aa97ca4b3b44626d06d366a93fa8c67de5cf52d565b17b48334603aad79b5cb3d293f54f6084df628e343f71f4704bff525c840e8435e9fa1cad27" [ host-name attribute-name ] ) ) ] ;
                                                                         dot-ssh =
