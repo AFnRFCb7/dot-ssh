@@ -38,7 +38,7 @@
                                                                                                             path : value :
                                                                                                                 let
                                                                                                                     x = value { resources = resources ; self = self ; } ;
-                                                                                                                    in builtins.concatStringsSep "" [ "#" ( bash-name host-name ( builtins.elemAt path 0 ) ) "=" x.directory ] ;
+                                                                                                                    in builtins.concatStringsSep "" [ ( bash-name host-name ( builtins.elemAt path 0 ) ) "=" x.directory ] ;
                                                                                                         string = path : value : builtins.concatStringsSep "" [ ( bash-name host-name ( builtins.elemAt path 0 ) ) "=" ( builtins.toJSON value) ] ;
                                                                                                     }
                                                                                                     value ;
@@ -165,6 +165,7 @@
                                                                             ''
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues bash ) }
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues exports ) }
+                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues roots ) }
                                                                                 envsubst < ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues dot-ssh ) ) ) } > /mount/dot-ssh
                                                                                 chmod 0400 /mount/dot-ssh
                                                                             '' ;
