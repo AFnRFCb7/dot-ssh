@@ -127,9 +127,31 @@
                                                                                                                 value ;
                                                                                                 in [ ( builtins.concatStringsSep "\n" [ ( "HostName ${ name }" ) ] ) ] ;
                                                                             in builtins.mapAttrs mapper configuration ;
+                                                                        exports =
+                                                                            let
+                                                                                mapper =
+                                                                                    host-name : value :
+                                                                                        let
+                                                                                            v =
+                                                                                                let
+                                                                                                    export = path : value : "export ${ bash-name host-name ( builtins.elemAt path 0 ) }" ;
+                                                                                                    in
+                                                                                                        visitor
+                                                                                                            {
+                                                                                                                bool = path : value : export ;
+                                                                                                                int = path : value : export ;
+                                                                                                                lambda = path : value : export ;
+                                                                                                                string = path : value : export ;
+                                                                                                            }
+                                                                                                            value ;
+                                                                                            in builtins.concatStringsSep "\n" ( builtins.attrValues v ) ;
+                                                                                            # in "# host-name = ${ host-name }" ;
+                                                                                in builtins.mapAttrs mapper configuration ;
+
                                                                         in
                                                                             ''
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues bash ) }
+                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues exports ) }
                                                                                 envsubst < ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues dot-ssh ) ) ) } > /mount/dot-ssh
                                                                                 chmod 0400 /mount/dot-ssh
                                                                             '' ;
