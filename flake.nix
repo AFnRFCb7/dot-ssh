@@ -119,7 +119,7 @@
                                                                                                                             in
                                                                                                                                 visitor
                                                                                                                                     {
-                                                                                                                                        bool = path : value : "  ${ attribute-name path } ${ builtins.concatStringsSep "" [ "$" "{" ( bash-name host-name ) "}" ] }"  ;
+                                                                                                                                        bool = path : value : "  ${ attribute-name path } ${ builtins.concatStringsSep "" [ "$" "{" ( bash-name host-name ( builtins.elemAt path 0 ) ) "}" ] }"  ;
                                                                                                                                         int = export ;
                                                                                                                                         lambda = export ;
                                                                                                                                         string = export ;
