@@ -109,21 +109,23 @@
                                                                                             let
                                                                                                 dot-ssh =
                                                                                                     let
-                                                                                                        string =
-                                                                                                            path : value : variable :
+                                                                                                        mapper =
+                                                                                                            host-name : value :
                                                                                                                 let
-                                                                                                                    expression = builtins.replaceStrings [ "-a" "-b" "-c" "-d" "-e" "-f" "-g" "-h" "-i" "-j" "-k" "-l" "-m" "-n" "-o" "-p" "-q" "-r" "-s" "-t" "-u" "-v" "-w" "-x" "-y" "-z" ] [ "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" ] ( builtins.concatStringsSep "" [ "-" ( builtins.elemAt path 0 ) ] ) ;
-                                                                                                                    value = builtins.concatStringsSep "" [ "$" "{" ( bash-name name ( builtins.elemAt path 0 ) ) "}" ] ;
-                                                                                                                    in [ "${ expression } ${ value }" ] ;
-                                                                                                        in
-                                                                                                            visitor
-                                                                                                                {
-                                                                                                                    bool = string true ;
-                                                                                                                    int = string true ;
-                                                                                                                    lambda = string false ;
-                                                                                                                    string = string true ;
-                                                                                                                }
-                                                                                                                value ;
+                                                                                                                    v =
+                                                                                                                        let
+                                                                                                                            export = path : value : "export ${ bash-name host-name ( builtins.elemAt path 0 ) }" ;
+                                                                                                                            in
+                                                                                                                                visitor
+                                                                                                                                    {
+                                                                                                                                        bool = export ;
+                                                                                                                                        int = export ;
+                                                                                                                                        lambda = export ;
+                                                                                                                                        string = export ;
+                                                                                                                                    }
+                                                                                                                                    value ;
+                                                                                            in builtins.concatStringsSep "\n" ( builtins.attrValues v ) ;
+                                                                                in builtins.mapAttrs mapper configuration ;
                                                                                                 in [ ( builtins.concatStringsSep "\n" [ ( "HostName ${ name }" ) ] ) ] ;
                                                                             in builtins.mapAttrs mapper configuration ;
                                                                         exports =
