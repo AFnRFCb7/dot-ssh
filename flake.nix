@@ -107,14 +107,13 @@
                                                                                             user-known-hosts-file ? null
                                                                                         } @value :
                                                                                             let
-                                                                                                dot-ssh =
+                                                                                                dot-ssh-config =
                                                                                                     let
                                                                                                         mapper =
-                                                                                                            host-name : value :
+                                                                                                            host-name : host-config :
                                                                                                                 let
                                                                                                                     v =
                                                                                                                         let
-                                                                                                                            export = path : value : "  ${ attribute-name path }" ;
                                                                                                                             attribute-name = path : builtins.replaceStrings [ "-a" "-b" "-c" "-d" "-e" "-f" "-g" "-h" "-i" "-j" "-k" "-l" "-m" "-n" "-o" "-p" "-q" "-r" "-s" "-t" "-u" "-v" "-w" "-x" "-y" "-z" ] [ "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" ] ( builtins.concatStringsSep "" [ "-" ( builtins.elemAt path 0 ) ] ) ;
                                                                                                                             in
                                                                                                                                 visitor
@@ -129,10 +128,10 @@
                                                                                                                                                         "  ${ attribute-name path } ${ builtins.concatStringsSep "" [ "$" "{" ( bash-name host-name ( builtins.elemAt path 0 ) ) "}" ] }/${ x.file }"  ;
                                                                                                                                         string = path : value : "  ${ attribute-name path } ${ builtins.concatStringsSep "" [ "$" "{" ( bash-name host-name ( builtins.elemAt path 0 ) ) "}" ] }"  ;
                                                                                                                                     }
-                                                                                                                                    value ;
-                                                                                                                    in builtins.concatStringsSep "\n" ( builtins.attrValues v ) ;
+                                                                                                                                    host-config ;
+                                                                                                                    in builtins.trace ( builtins.toJSON { host-name = host-name ; host-config = host-config ; } ) ( builtins.concatStringsSep "\n" ( builtins.attrValues v ) ) ;
                                                                                                         in builtins.mapAttrs mapper configuration ;
-                                                                                                in [ ( builtins.concatStringsSep "\n" [ ( "HostName ${ name }" ) ( builtins.concatStringsSep "\n" ( builtins.attrValues dot-ssh ) ) ] ) ] ;
+                                                                                                in [ ( builtins.concatStringsSep "\n" [ ( "HostName ${ name }" ) ( builtins.concatStringsSep "\n" ( builtins.attrValues dot-ssh-config ) ) ] ) ] ;
                                                                             in builtins.mapAttrs mapper configuration ;
                                                                         exports =
                                                                             let
