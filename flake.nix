@@ -118,7 +118,7 @@
                                                                                                                             in
                                                                                                                                 visitor
                                                                                                                                     {
-                                                                                                                                        bool = path : value : "  ${ attribute-name path } ${ builtins.concatStringsSep "" [ "$" "{" ( bash-name host-name ( builtins.elemAt path 0 ) ) "}" ] }"  ;
+                                                                                                                                        bool = path : value : "  ${ attribute-name path } ${ builtins.concatS5358eb257e0b73426044c224ed54d2d1298c36cetringsSep "" [ "$" "{" ( bash-name host-name ( builtins.elemAt path 0 ) ) "}" ] }"  ;
                                                                                                                                         int = path : value : "  ${ attribute-name path } ${ builtins.concatStringsSep "" [ "$" "{" ( bash-name host-name ( builtins.elemAt path 0 ) ) "}" ] }"  ;
                                                                                                                                         lambda =
                                                                                                                                             path : value :
@@ -129,9 +129,9 @@
                                                                                                                                         string = path : value : "  ${ attribute-name path } ${ builtins.concatStringsSep "" [ "$" "{" ( bash-name host-name ( builtins.elemAt path 0 ) ) "}" ] }"  ;
                                                                                                                                     }
                                                                                                                                     host-config ;
-                                                                                                                    in builtins.trace ( builtins.toJSON { host-name = host-name ; host-config = builtins.attrNames host-config ; } ) ( builtins.concatStringsSep "\n" ( builtins.attrValues v ) ) ;
-                                                                                                        in builtins.mapAttrs mapper configuration ;
-                                                                                                in [ ( builtins.concatStringsSep "\n" [ ( "HostName ${ name }" ) ( builtins.concatStringsSep "\n" ( builtins.attrValues dot-ssh-config ) ) ] ) ] ;
+                                                                                                                    in builtins.concatStringsSep "\n" ( builtins.attrValues v ) ;
+                                                                                                        in builtins.mapAttrs mapper value ;
+                                                                                                in [ ( builtins.concatStringsSep "\n" [ ( builtins.concatLists [ [ "HostName ${ name }" ] ( builtins.getAttr name v ) ] ) ] ) ] ;
                                                                             in builtins.mapAttrs mapper configuration ;
                                                                         exports =
                                                                             let
