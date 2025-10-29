@@ -126,7 +126,7 @@
                                                                                                                                     value ;
                                                                                                                     in builtins.concatStringsSep "\n" ( builtins.attrValues v ) ;
                                                                                                         in builtins.mapAttrs mapper configuration ;
-                                                                                                in [ ( builtins.concatStringsSep "\n" [ ( "HostName ${ name }" ) ( builtins.map ( line : "  ${ line }" ) ( builtins.attrValues dot-ssh ) ) ] ) ] ;
+                                                                                                in [ ( builtins.concatStringsSep "\n" [ ( "HostName ${ name }" ) ( builtins.concatStringsSep "\n" ( builtins.attrValues dot-ssh ) ) ] ) ] ;
                                                                             in builtins.mapAttrs mapper configuration ;
                                                                         exports =
                                                                             let
