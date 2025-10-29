@@ -137,10 +137,10 @@
                                                                                                     in
                                                                                                         visitor
                                                                                                             {
-                                                                                                                bool = path : value : export ;
-                                                                                                                int = path : value : export ;
-                                                                                                                lambda = path : value : export ;
-                                                                                                                string = path : value : export ;
+                                                                                                                bool = export ;
+                                                                                                                int = export ;
+                                                                                                                lambda = export ;
+                                                                                                                string = export ;
                                                                                                             }
                                                                                                             value ;
                                                                                             in builtins.concatStringsSep "\n" ( builtins.attrValues v ) ;
