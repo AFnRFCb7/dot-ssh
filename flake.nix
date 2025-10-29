@@ -121,7 +121,12 @@
                                                                                                                                     {
                                                                                                                                         bool = path : value : "  ${ attribute-name path } ${ builtins.concatStringsSep "" [ "$" "{" ( bash-name host-name ( builtins.elemAt path 0 ) ) "}" ] }"  ;
                                                                                                                                         int = path : value : "  ${ attribute-name path } ${ builtins.concatStringsSep "" [ "$" "{" ( bash-name host-name ( builtins.elemAt path 0 ) ) "}" ] }"  ;
-                                                                                                                                        lambda = path : value : "  ${ attribute-name path } ${ builtins.concatStringsSep "" [ "$" "{" ( bash-name host-name ( builtins.elemAt path 0 ) ) "}" ] }"  ;
+                                                                                                                                        lambda =
+                                                                                                                                            path : value :
+                                                                                                                                                let
+                                                                                                                                                    x = value { resources = resources ; self = self ; } ;
+                                                                                                                                                    in
+                                                                                                                                                        "  ${ attribute-name path } ${ builtins.concatStringsSep "" [ "$" "{" ( bash-name host-name ( builtins.elemAt path 0 ) ) "}" ] }/${ x.file }"  ;
                                                                                                                                         string = path : value : "  ${ attribute-name path } ${ builtins.concatStringsSep "" [ "$" "{" ( bash-name host-name ( builtins.elemAt path 0 ) ) "}" ] }"  ;
                                                                                                                                     }
                                                                                                                                     value ;
