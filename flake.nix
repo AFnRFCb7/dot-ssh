@@ -155,7 +155,7 @@
                                                                                                     {
                                                                                                         bool = path : value : [ ] ;
                                                                                                         int = path : value : [ ] ;
-                                                                                                        lambda = path : value : [ "# root here" ] ;
+                                                                                                        lambda = path : value : [ ( bash-name host-name ( builtins.elemAt path 0 ) ] ;
                                                                                                         string = path : value : [ ] ;
                                                                                                     }
                                                                                                     value ;
