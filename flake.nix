@@ -36,7 +36,7 @@
                                                                                                             bool = path : value : [ "${ bash-name host-name ( builtins.elemAt path 0 ) }=" ] ;
                                                                                                             int = path : value : [ "${ bash-name host-name ( builtins.elemAt path 0 ) }=" ] ;
                                                                                                             lambda = path : value : [ "${ bash-name host-name ( builtins.elemAt path 0 ) }=" ] ;
-                                                                                                            set = path : value : builtins.concatLists ( builtins.attrValues set ) ;
+                                                                                                            set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
                                                                                                             string = path : value : [ "${ bash-name host-name ( builtins.elemAt path 0 ) }=" ] ;
                                                                                                         }
                                                                                                         value ;
