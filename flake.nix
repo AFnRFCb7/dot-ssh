@@ -36,7 +36,7 @@
                                                                                                             bool = path : value : [ "${ bash-name host-name ( builtins.elemAt path 0 ) }=" ] ;
                                                                                                             int = path : value : [ "${ bash-name host-name ( builtins.elemAt path 0 ) }=" ] ;
                                                                                                             lambda = path : value : [ "${ bash-name host-name ( builtins.elemAt path 0 ) }=" ] ;
-                                                                                                            set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
+                                                                                                            set = path : value : builtins.concatLists ( builtins.attrValues set ) ;
                                                                                                             string = path : value : [ "${ bash-name host-name ( builtins.elemAt path 0 ) }=" ] ;
                                                                                                         }
                                                                                                         value ;
@@ -126,7 +126,7 @@
                                                                             in builtins.mapAttrs mapper configuration ;
                                                                         in
                                                                             ''
-                                                                                ${ builtins.concatStringsSep "\n" bash }
+                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues bash ) }
                                                                                 envsubst < ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues dot-ssh ) ) ) } > /mount/dot-ssh
                                                                                 chmod 0400 /mount/dot-ssh
                                                                             '' ;
