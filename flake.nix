@@ -131,7 +131,7 @@
                                                                                                                                     host-config ;
                                                                                                                     in builtins.concatStringsSep "\n" ( builtins.attrValues v ) ;
                                                                                                         in builtins.mapAttrs mapper value ;
-                                                                                                in [ ( builtins.concatStringsSep "\n" [ ( builtins.concatLists [ [ "HostName ${ name }" ] ] ) ] ) ] ;
+                                                                                                in [ ( builtins.concatStringsSep "\n" [ "HostName ${ name }" ] ) ] ;
                                                                             in builtins.mapAttrs mapper configuration ;
                                                                         exports =
                                                                             let
