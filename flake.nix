@@ -25,7 +25,7 @@
                                                                 text =
                                                                     let
                                                                         bash =
-                                                                            [ ] ;
+                                                                            { } ;
                                                                         bash-name = host-name : attribute-name : builtins.concatStringsSep "" [ "V" ( builtins.hashString "sha512" ( builtins.concatStringsSep "c80c2687f8aa97ca4b3b44626d06d366a93fa8c67de5cf52d565b17b48334603aad79b5cb3d293f54f6084df628e343f71f4704bff525c840e8435e9fa1cad27" [ host-name attribute-name ] ) ) ] ;
                                                                         dot-ssh =
                                                                             let
