@@ -131,7 +131,7 @@
                                                                                                                                     host-config ;
                                                                                                                     in builtins.concatStringsSep "\n" ( builtins.attrValues v ) ;
                                                                                                         in builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper value ) ) ;
-                                                                                                in [ ( builtins.concatStringsSep "\n" [ "HostName ${ name }" dot-ssh ] ) ] ;
+                                                                                                in [ ( builtins.concatStringsSep "\n" [ "HostName ${ name }" dot-ssh-config ] ) ] ;
                                                                             in builtins.mapAttrs mapper configuration ;
                                                                         exports =
                                                                             let
