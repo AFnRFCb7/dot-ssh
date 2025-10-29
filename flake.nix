@@ -155,7 +155,7 @@
                                                                                                     {
                                                                                                         bool = path : value : [ ] ;
                                                                                                         int = path : value : [ ] ;
-                                                                                                        lambda = path : value : [ ( bash-name host-name ( builtins.elemAt path 0 ) ) ] ;
+                                                                                                        lambda = path : value : [ ( builtins.concatStringsSep " " [ "ln" "--symbolic" ( bash-name host-name ( builtins.elemAt path 0 ) ) "/links" ] ;
                                                                                                         string = path : value : [ ] ;
                                                                                                     }
                                                                                                     value ;
