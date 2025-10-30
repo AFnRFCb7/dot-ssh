@@ -72,7 +72,6 @@
                                                                                             gssapi-trust-dns ? null ,
                                                                                             host ? null ,
                                                                                             hostkey-alias ? null ,
-                                                                                            host-name ? null ,
                                                                                             identities-only ? null ,
                                                                                             identity-agent ? null ,
                                                                                             identity-file ? null ,
