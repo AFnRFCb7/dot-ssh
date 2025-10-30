@@ -114,23 +114,18 @@
                                                                                                                 let
                                                                                                                     v =
                                                                                                                         let
-                                                                                                                            attribute-name = path : builtins.replaceStrings [ "-a" "-b" "-c" "-d" "-e" "-f" "-g" "-h" "-i" "-j" "-k" "-l" "-m" "-n" "-o" "-p" "-q" "-r" "-s" "-t" "-u" "-v" "-w" "-x" "-y" "-z" ] [ "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" ] ( builtins.concatStringsSep "" [ "-" ( builtins.elemAt path 0 ) ] ) ;
-                                                                                                                            in
-                                                                                                                                visitor
-                                                                                                                                    {
-                                                                                                                                        bool = path : value : "  ${ attribute-name path } ${ builtins.concatS5358eb257e0b73426044c224ed54d2d1298c36cetringsSep "" [ "$" "{" ( bash-name host-name ( builtins.elemAt path 0 ) ) "}" ] }"  ;
-                                                                                                                                        int = path : value : "  ${ attribute-name path } ${ builtins.concatStringsSep "" [ "$" "{" ( bash-name host-name ( builtins.elemAt path 0 ) ) "}" ] }"  ;
-                                                                                                                                        lambda =
-                                                                                                                                            path : value :
+                                                                                                                            mapper =
+                                                                                                                                attribute-name : attribute-value :
+                                                                                                                                    let
+                                                                                                                                        name = path : builtins.replaceStrings [ "-a" "-b" "-c" "-d" "-e" "-f" "-g" "-h" "-i" "-j" "-k" "-l" "-m" "-n" "-o" "-p" "-q" "-r" "-s" "-t" "-u" "-v" "-w" "-x" "-y" "-z" ] [ "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" ] ( builtins.concatStringsSep "" [ "-" attribute-name ] ) ;
+                                                                                                                                        in
+                                                                                                                                            if
                                                                                                                                                 let
-                                                                                                                                                    x = value { resources = resources ; self = self ; } ;
-                                                                                                                                                    in
-                                                                                                                                                        "  ${ attribute-name path } ${ builtins.concatStringsSep "" [ "$" "{" ( bash-name host-name ( builtins.elemAt path 0 ) ) "}" ] }/${ x.file }"  ;
-                                                                                                                                        string = path : value : "  ${ attribute-name path } ${ builtins.concatStringsSep "" [ "$" "{" ( bash-name host-name ( builtins.elemAt path 0 ) ) "}" ] }"  ;
-                                                                                                                                    }
-                                                                                                                                    host-config ;
-                                                                                                                    in builtins.concatStringsSep "\n" ( builtins.attrValues v ) ;
-                                                                                                        in builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper value ) ) ;
+                                                                                                                                                    x = attribute-value { resources = resources ; self = self ; } ;
+                                                                                                                                                    in builtins.typeOf attribute-value == "lambda" then "${ name } ${ builtins.concatStringsSep " " [ "$" "{" ( bash-name host-name attribute-name ) "}" ] }/${ x.file }"
+                                                                                                                                            else "${ name } ${ builtins.concatStringsSep " " [ "$" "{" ( bash-name host-name attribute-name ) "}" ] }" ;
+                                                                                                                            in builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper host-config ) ) ;
+                                                                                                                    in builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper value ) ) ;
                                                                                                 in [ ( builtins.concatStringsSep "\n" [ "HostName ${ name }" dot-ssh-config ] ) ] ;
                                                                             in builtins.mapAttrs mapper configuration ;
                                                                         exports =
