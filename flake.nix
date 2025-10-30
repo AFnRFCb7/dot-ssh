@@ -48,7 +48,7 @@
                                                                         dot-ssh =
                                                                             let
                                                                                 mapper =
-                                                                                    name :
+                                                                                    host-name :
                                                                                         {
                                                                                             address-family ? null ,
                                                                                             batch-mode ? null ,
@@ -107,8 +107,19 @@
                                                                                             user-known-hosts-file ? null
                                                                                         } @value :
                                                                                             let
+                                                                                                mapper =
+                                                                                                    attribute-name : attribute-value :
+                                                                                                        let
+                                                                                                            left-name = bash-name host-name attribute-name ;
+                                                                                                            right-name = builtins.replaceStrings [ "-a" "-b" "-c" "-d" "-e" "-f" "-g" "-h" "-i" "-j" "-k" "-l" "-m" "-n" "-o" "-p" "-q" "-r" "-s" "-t" "-u" "-v" "-w" "-x" "-y" "-z" ] [ "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" ] ( builtins.concatStringsSep "" [ "-" attribute-name ] ) ;
+                                                                                                            in
+                                                                                                                if builtins.typeOf attribute-value == "lambda" then
+                                                                                                                    let
+                                                                                                                        x = attribute-value { resources = resources ; self = self ; } ;
+                                                                                                                        in [ "${ left-name } ${ right-name }/${ x.file }" ]
+                                                                                                                else [ "${ left-name } ${ right-name }" ] ;
                                                                                                 in
-                                                                                                    "A" ;
+                                                                                                    builtins.concatStringsSep "\n" ( builtins.concatLists [ [ "HostName ${ host-name }" ] ( builtins.map ( line : "  ${ line }" ) ( builtins.concatLists ( builtins.attrValues ( builtins.mapAttrs mapper value ) ) ) ) ] ) ;
                                                                             in builtins.mapAttrs mapper configuration ;
                                                                         exports =
                                                                             let
