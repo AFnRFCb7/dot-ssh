@@ -108,7 +108,7 @@
                                                                                         } @value :
                                                                                             let
                                                                                                 in
-                                                                                                    { a = "A" ; b = "B" ; } ;
+                                                                                                    "A"
                                                                             in builtins.mapAttrs mapper configuration ;
                                                                         exports =
                                                                             let
