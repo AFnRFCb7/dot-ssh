@@ -107,26 +107,8 @@
                                                                                             user-known-hosts-file ? null
                                                                                         } @value :
                                                                                             let
-                                                                                                dot-ssh-config =
-                                                                                                    let
-                                                                                                        mapper =
-                                                                                                            host-name : host-config :
-                                                                                                                let
-                                                                                                                    v =
-                                                                                                                        let
-                                                                                                                            mapper =
-                                                                                                                                attribute-name : attribute-value :
-                                                                                                                                    let
-                                                                                                                                        name = path : builtins.replaceStrings [ "-a" "-b" "-c" "-d" "-e" "-f" "-g" "-h" "-i" "-j" "-k" "-l" "-m" "-n" "-o" "-p" "-q" "-r" "-s" "-t" "-u" "-v" "-w" "-x" "-y" "-z" ] [ "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" ] ( builtins.concatStringsSep "" [ "-" attribute-name ] ) ;
-                                                                                                                                        in
-                                                                                                                                            if
-                                                                                                                                                let
-                                                                                                                                                    x = attribute-value { resources = resources ; self = self ; } ;
-                                                                                                                                                    in builtins.typeOf attribute-value == "lambda" then "${ name } ${ builtins.concatStringsSep " " [ "$" "{" ( bash-name host-name attribute-name ) "}" ] }/${ x.file }"
-                                                                                                                                            else "${ name } ${ builtins.concatStringsSep " " [ "$" "{" ( bash-name host-name attribute-name ) "}" ] }" ;
-                                                                                                                            in builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper host-config ) ) ;
-                                                                                                                    in builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper value ) ) ;
-                                                                                                in [ ( builtins.concatStringsSep "\n" [ "HostName ${ name }" dot-ssh-config ] ) ] ;
+                                                                                                in
+                                                                                                    [ "a" "b" ] ;
                                                                             in builtins.mapAttrs mapper configuration ;
                                                                         exports =
                                                                             let
@@ -168,7 +150,7 @@
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues bash ) }
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues exports ) }
                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.attrValues roots ) }
-                                                                                envsubst < ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues dot-ssh ) ) ) } > /mount/dot-ssh
+                                                                                envsubst < ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.attrValues dot-ssh ) ) } > /mount/dot-ssh
                                                                                 chmod 0400 /mount/dot-ssh
                                                                             '' ;
                                                             } ;
