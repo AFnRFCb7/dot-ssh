@@ -119,7 +119,7 @@
                                                                                                                         in [ "${ left-name } ${ right-name }/${ x.file }" ]
                                                                                                                 else [ "${ left-name } ${ right-name }" ] ;
                                                                                                 in
-                                                                                                    builtins.concatStringsSep "\n" ( builtins.concatLists [ [ "HostName ${ host-name }" ] ( builtins.map ( line : "  ${ line }" ) ( builtins.concatLists ( builtins.attrValues ( builtins.mapAttrs mapper value ) ) ) ) ] ) ;
+                                                                                                    builtins.concatStringsSep "\n" ( builtins.concatLists [ [ "HostName ${ host-name }" ] ] ) ;
                                                                             in builtins.mapAttrs mapper configuration ;
                                                                         exports =
                                                                             let
