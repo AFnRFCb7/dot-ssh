@@ -115,8 +115,8 @@
                                                                                                                 if builtins.typeOf attribute-value == "lambda" then
                                                                                                                     let
                                                                                                                         x = attribute-value { resources = resources ; self = self ; } ;
-                                                                                                                        in ''${ right-name } "${ builtins.concatStringsSep "" [ "$" "{" left-name "}" ] }/${ x.file }"''
-                                                                                                                else ''${ right-name } "${ builtins.concatStringsSep "" [ "$" "{" left-name "}" ] }"'' ;
+                                                                                                                        in "${ right-name } ${ builtins.concatStringsSep "" [ "$" "{" left-name "}" ] }/${ x.file }"
+                                                                                                                else "${ right-name } ${ builtins.concatStringsSep "" [ "$" "{" left-name "}" ] }" ;
                                                                                                 in
                                                                                                     builtins.concatStringsSep "\n" ( builtins.concatLists [ [ "HostName ${ host-name }" ] ( builtins.attrValues ( builtins.mapAttrs mapper value ) ) ] ) ;
                                                                             in builtins.mapAttrs mapper configuration ;
