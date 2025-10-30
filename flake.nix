@@ -107,7 +107,7 @@
                                                                                         } @value :
                                                                                             let
                                                                                                 in
-                                                                                                    builtins.concatStringsSep "\n" ( builtins.concatLists [ [ "HostName ${ builtins.typeOf host-name }" ] ] ) ;
+                                                                                                    builtins.concatStringsSep "\n" ( builtins.concatLists [ [ "HostName ${ host-name }" ] ] ) ;
                                                                             in builtins.mapAttrs mapper configuration ;
                                                                         exports =
                                                                             let
