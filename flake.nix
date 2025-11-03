@@ -15,7 +15,7 @@
                                 configuration :
                                     {
                                         init =
-                                            { resources , self } :
+                                            { resources , self , stores } :
                                                 let
                                                     application =
                                                         writeShellApplication
@@ -176,7 +176,8 @@
                                             failure ,
                                             mkDerivation ,
                                             resources ? null ,
-                                            self ? null
+                                            self ? null ,
+                                            stores ? null
                                         } :
                                             mkDerivation
                                                 {
@@ -220,7 +221,7 @@
                                                                         text =
                                                                             let
                                                                                 x = implementation configuration ;
-                                                                                observed = builtins.toString ( x.init { resources = resources ; self = self ; } ) ;
+                                                                                observed = builtins.toString ( x.init { resources = resources ; self = self ; stores = stores ; } ) ;
                                                                             in
                                                                                 if expected == observed then
                                                                                     ''
