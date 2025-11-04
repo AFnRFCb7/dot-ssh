@@ -13,10 +13,10 @@
                                             { pkgs , resources , self } :
                                                 let
                                                     application =
-                                                        writeShellApplication
+                                                        pkgs.writeShellApplication
                                                             {
                                                                 name = "init" ;
-                                                                runtimeInputs = [ coreutils gettext ] ;
+                                                                runtimeInputs = [ pkgs.coreutils pkgs.gettext ] ;
                                                                 text =
                                                                     let
                                                                         bash =
