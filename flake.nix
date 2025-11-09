@@ -65,7 +65,7 @@
                                                                                             gssapi-key-exchange ? null ,
                                                                                             gssapi-renewal-forces-rekey ? null ,
                                                                                             gssapi-trust-dns ? null ,
-                                                                                            host ? null ,
+                                                                                            host-name ? null ,
                                                                                             hostkey-alias ? null ,
                                                                                             identities-only ? null ,
                                                                                             identity-agent ? null ,
@@ -113,7 +113,7 @@
                                                                                                                         in "${ right-name } ${ builtins.concatStringsSep "" [ "$" "{" left-name "}" ] }/${ x.file }"
                                                                                                                 else "${ right-name } ${ builtins.concatStringsSep "" [ "$" "{" left-name "}" ] }" ;
                                                                                                 in
-                                                                                                    builtins.concatStringsSep "\n" ( builtins.concatLists [ [ "HostName ${ host-name }" ] ( builtins.map ( line : "  ${ line }" ) ( builtins.attrValues ( builtins.mapAttrs mapper value ) ) ) ] ) ;
+                                                                                                    builtins.concatStringsSep "\n" ( builtins.concatLists [ [ "Host ${ host-name }" ] ( builtins.map ( line : "  ${ line }" ) ( builtins.attrValues ( builtins.mapAttrs mapper value ) ) ) ] ) ;
                                                                             in builtins.mapAttrs mapper configuration ;
                                                                         exports =
                                                                             let
