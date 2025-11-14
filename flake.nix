@@ -109,7 +109,7 @@
                                                                                                             in
                                                                                                                 if builtins.typeOf attribute-value == "lambda" then
                                                                                                                     let
-                                                                                                                        x = attribute-value { pkgs = pkgs ; resources = resources ; self = self ; } ;
+                                                                                                                        x = attribute-value { mount = mount ; pkgs = pkgs ; resources = resources ; stage = stage ; } ;
                                                                                                                         in "${ right-name } ${ builtins.concatStringsSep "" [ "$" "{" left-name "}" ] }/${ x.file }"
                                                                                                                 else "${ right-name } ${ builtins.concatStringsSep "" [ "$" "{" left-name "}" ] }" ;
                                                                                                 in
