@@ -10,7 +10,7 @@
                                 configuration :
                                     {
                                         init =
-                                            { pkgs , resources , self } :
+                                            { mount , pkgs , resources , stage } :
                                                 let
                                                     application =
                                                         pkgs.writeShellApplication
@@ -32,7 +32,7 @@
                                                                                                         lambda =
                                                                                                             path : value :
                                                                                                                 let
-                                                                                                                    x = value { pkgs = pkgs ; resources = resources ; self = self ; } ;
+                                                                                                                    x = value { mount = mount ; pkgs = pkgs ; resources = resources ; stage = stage ; } ;
                                                                                                                     in builtins.concatStringsSep "" [ ( bash-name host-name ( builtins.elemAt path 0 ) ) "=" x.directory ] ;
                                                                                                         string = path : value : builtins.concatStringsSep "" [ ( bash-name host-name ( builtins.elemAt path 0 ) ) "=" ( builtins.toJSON value) ] ;
                                                                                                     }
@@ -169,9 +169,10 @@
                                             configuration ,
                                             expected ,
                                             failure ,
+                                            mount ? null ,
                                             pkgs ? null ,
                                             resources ? null ,
-                                            self ? null
+                                            stage ? null
                                         } :
                                             pkgs.stdenv.mkDerivation
                                                 {
@@ -189,7 +190,7 @@
                                                                         runtimeInputs = [ pkgs.coreutils failure ] ;
                                                                         text =
                                                                             let
-                                                                                init = instance.init { pkgs = pkgs ; resources = resources ; self = self ; } ;
+                                                                                init = instance.init { mount = mount ; pkgs = pkgs ; resources = resources ; stage = stage ; } ;
                                                                                 instance = implementation configuration ;
                                                                                 in
                                                                                     ''
