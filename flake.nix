@@ -10,7 +10,7 @@
                                 configuration :
                                     {
                                         init =
-                                            { mount , pkgs , resources , stage } :
+                                            { mount , pkgs , resources } :
                                                 let
                                                     application =
                                                         pkgs.writeShellApplication
@@ -32,7 +32,7 @@
                                                                                                         lambda =
                                                                                                             path : value :
                                                                                                                 let
-                                                                                                                    x = value { mount = mount ; pkgs = pkgs ; resources = resources ; stage = stage ; } ;
+                                                                                                                    x = value { mount = mount ; pkgs = pkgs ; resources = resources ; } ;
                                                                                                                     in builtins.concatStringsSep "" [ ( bash-name host-name ( builtins.elemAt path 0 ) ) "=" x.directory ] ;
                                                                                                         string = path : value : builtins.concatStringsSep "" [ ( bash-name host-name ( builtins.elemAt path 0 ) ) "=" ( builtins.toJSON value) ] ;
                                                                                                     }
@@ -109,7 +109,7 @@
                                                                                                             in
                                                                                                                 if builtins.typeOf attribute-value == "lambda" then
                                                                                                                     let
-                                                                                                                        x = attribute-value { mount = mount ; pkgs = pkgs ; resources = resources ; stage = stage ; } ;
+                                                                                                                        x = attribute-value { mount = mount ; pkgs = pkgs ; resources = resources ; } ;
                                                                                                                         in "${ right-name } ${ builtins.concatStringsSep "" [ "$" "{" left-name "}" ] }/${ x.file }"
                                                                                                                 else "${ right-name } ${ builtins.concatStringsSep "" [ "$" "{" left-name "}" ] }" ;
                                                                                                 in
@@ -171,8 +171,7 @@
                                             failure ,
                                             mount ? null ,
                                             pkgs ? null ,
-                                            resources ? null ,
-                                            stage ? null
+                                            resources ? null
                                         } :
                                             pkgs.stdenv.mkDerivation
                                                 {
@@ -190,7 +189,7 @@
                                                                         runtimeInputs = [ pkgs.coreutils failure ] ;
                                                                         text =
                                                                             let
-                                                                                init = instance.init { mount = mount ; pkgs = pkgs ; resources = resources ; stage = stage ; } ;
+                                                                                init = instance.init { mount = mount ; pkgs = pkgs ; resources = resources ; } ;
                                                                                 instance = implementation configuration ;
                                                                                 in
                                                                                     ''
