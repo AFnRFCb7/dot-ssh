@@ -32,7 +32,7 @@
                                                                                                         lambda =
                                                                                                             path : value :
                                                                                                                 let
-                                                                                                                    x = value { mount = mount ; pkgs = pkgs ; resources = resources ; stage = stage ; } ;
+                                                                                                                    x = value { mount = mount ; pkgs = pkgs ; resources = resources ; } ;
                                                                                                                     in builtins.concatStringsSep "" [ ( bash-name host-name ( builtins.elemAt path 0 ) ) "=" x.directory ] ;
                                                                                                         string = path : value : builtins.concatStringsSep "" [ ( bash-name host-name ( builtins.elemAt path 0 ) ) "=" ( builtins.toJSON value) ] ;
                                                                                                     }
