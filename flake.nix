@@ -10,7 +10,7 @@
                             implementation =
                                 { configuration , resources } :
                                     let
-                                        implementation-resources = resources ;
+                                        implementation-resources = builtins.trace "47ccf522af219de07ee3180fed6236b5bc303a233383faac94ae73ab9819cc39a2658a694b5ef9f3dbaecdcee9baf750673784d020b8611633766b06e13447fe" resources ;
                                         in
                                             {
                                                 init =
