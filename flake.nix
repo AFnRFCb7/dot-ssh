@@ -89,7 +89,7 @@
                                                                                                 path : value :
                                                                                                     if builtins.length path == 2 then
                                                                                                         let
-                                                                                                            resource-name = builtins.concatStringsSep "" [ "A" ( builtins.hashString "sha512" ( builtins.concatStringsSep "" ( builtins.map builtins.toJSON path ) ) ) ] ;
+                                                                                                            resource-name = builtins.concatStringsSep "" [ "A" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
                                                                                                             in
                                                                                                                 [
                                                                                                                     ''if "$HAS_STANDARD_INPUT" ; then ${ resource-name }=${ value ( setup : ''echo "$STANDARD_INPUT" | ${ setup } "$@"'' ) } ; else ${ resource-name }=${ value ( setup : ''${ setup } "$@"'' ) } ; fi''
@@ -110,7 +110,7 @@
                                                                                                     let
                                                                                                         host = builtins.getAttr implementation-resources host-name ;
                                                                                                         host-name = builtins.elemAt path 0 ;
-                                                                                                        value-name = builtins.concatStringsSep "" [ "B" ( builtins.hashString "sha512" ( builtins.concatStringsSep "" ( builtins.map builtins.toJSON path ) ) ) ] ;
+                                                                                                        value-name = builtins.concatStringsSep "" [ "B" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
                                                                                                         in
                                                                                                             if builtins.typeOf implementation-resources != "set" then builtins.throw "ssh configuration is wrongly nested.  resources must be a set"
                                                                                                             else if ! builtins.hasAttr host-name implementation-resources then builtins.throw "ssh configuration is wrongly nested.  resources must have ${ host-name }"
@@ -118,7 +118,7 @@
                                                                                                             else [ ''export ${ value-name }=${ value }'' ]
                                                                                                 else
                                                                                                     let
-                                                                                                        value-name = builtins.concatStringsSep "" [ "B" ( builtins.hashString "sha512" ( builtins.concatStringsSep "" ( builtins.map builtins.toJSON path ) ) ) ] ;
+                                                                                                        value-name = builtins.concatStringsSep "" [ "B" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
                                                                                                         in [ ''export ${ value-name }=${ value }'' ] ;
                                                                                         in
                                                                                             visitor
@@ -129,7 +129,7 @@
                                                                                                     lambda =
                                                                                                         path : value :
                                                                                                             let
-                                                                                                                resource-name = builtins.concatStringsSep "" [ "A" ( builtins.hashString "sha512" ( builtins.concatStringsSep "" ( builtins.map builtins.toJSON path ) ) ) ] ;
+                                                                                                                resource-name = builtins.concatStringsSep "" [ "A" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
                                                                                                                 variable-name = builtins.concatStringsSep "" [ "$" "{" resource-name "}" ] ;
                                                                                                                 in string path ( value ( builtins.concatStringsSep "/" [ mount "stage" variable-name ] ) ) true ;
                                                                                                     list = concat.list ;
@@ -214,7 +214,7 @@
                                                                                                                           ${ configuration-name }=${ builtins.concatStringsSep "" [ "$" "{" value "}" ] }
                                                                                                                         '' ;
                                                                                                                     in "  ${ string }" ;
-                                                                                                        in builtins.concatStringsSep "\n" ( builtins.concatLists [ [ "Host ${ host }" ] ( builtins.attrValues ( builtins.map mapper configuration ) ) ] ) ;
+                                                                                                        in builtins.concatStringsSep "\n" ( builtins.concatLists [ [ "Host ${ host }" ] ( builtins.attrValues ( builtins.mapAttrs mapper configuration ) ) ] ) ;
                                                                                         in builtins.mapAttrs mapper configuration ;
                                                                                 in
                                                                                     ''
