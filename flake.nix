@@ -108,7 +108,7 @@
                                                                                                 if builtins.length path != 2 then builtins.throw "ssh configuration is wrongly nested.  values must be two levels deep, but ${ builtins.toJSON path } is ${ builtins.toString ( builtins.length path ) } levels deep"
                                                                                                 else if check then
                                                                                                     let
-                                                                                                        host = builtins.getAttr ( builtins.trace "59cc7f2ca0ad92957a6771977de930ddbd10bb75511eb250a2e659642f405c186f47902f2fc2be3d9638c0f4cb7306ad05b3293af36796de8efe25a4e748794f" implementation-resources ) host-name ;
+                                                                                                        host = builtins.getAttr host-name implementation-resources ;
                                                                                                         host-name = builtins.elemAt path 0 ;
                                                                                                         value-name = builtins.concatStringsSep "" [ "B" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
                                                                                                         in
