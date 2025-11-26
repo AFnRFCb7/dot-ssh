@@ -142,7 +142,7 @@
                                                                                 concat =
                                                                                     {
                                                                                         list = path : list : if builtins.length path > 2 then builtins.throw "ssh configuration is wrongly nested at ${ builtins.toJSON path }.  paths may be no deeper than 2 but this is ${ builtins.toString ( builtins.length path ) }" else builtins.concatLists list ;
-                                                                                        set = path : set : if builtins.length path > 2 then builtins.throw "ssh configuration is wrongly nested at ${ builtins.toJSON path }.  set paths may be no deeper than 2 but this is ${ builtins.toString ( builtins.length path ) }" else builtins.concatLists ( builtins.attrValues set ) ;
+                                                                                        set = path : set : if builtins.length path > 2 then builtins.throw "ssh configuration is wrongly nested at ${ builtins.toJSON path }.  set paths may be no deeper than 2 but this is ${ builtins.toString ( builtins.length path ) }" else builtins.concatLists ( builtins.attrValues ( builtins.trace "b11dc30f283842d371b7fe361cda0ea20eb963fcd5a608cda2428d8823264e533e258ceb49da10e7de9adb5e393bc8b418187fcc8748ee0684ae2bd1b85d1834" set ) ) ;
                                                                                     } ;
                                                                                 gamma =
                                                                                     let
