@@ -4,46 +4,26 @@
         { self } :
             {
                 lib =
-                    { visitor } :
+                    { failure , visitor } :
                         let
                             implementation =
-                                configuration :
-                                    {
-                                        init =
-                                            { mount , pkgs , resources } :
-                                                let
-                                                    application =
-                                                        pkgs.writeShellApplication
-                                                            {
-                                                                name = "init" ;
-                                                                runtimeInputs = [ pkgs.coreutils pkgs.gettext ] ;
-                                                                text =
-                                                                    let
-                                                                        bash =
+                                { configuration , resources } :
+                                    let
+                                        implementation-resources = resources ;
+                                        in
+                                            {
+                                                init =
+                                                    { mount , pkgs , resources } :
+                                                        let
+                                                            application =
+                                                                pkgs.writeShellApplication
+                                                                    {
+                                                                        name = "init" ;
+                                                                        runtimeInputs = [ pkgs.coreutils pkgs.gettext ] ;
+                                                                        text =
                                                                             let
                                                                                 mapper =
-                                                                                    host-name : value :
-                                                                                        let
-                                                                                            v =
-                                                                                                visitor
-                                                                                                    {
-                                                                                                        bool = path : value : builtins.concatStringsSep "" [ ( bash-name host-name ( builtins.elemAt path 0 ) ) "=" ( if value then "Yes" else "No" ) ] ;
-                                                                                                        int = path : value : builtins.concatStringsSep "" [ ( bash-name host-name ( builtins.elemAt path 0 ) ) "=" ( builtins.toJSON value ) ] ;
-                                                                                                        lambda =
-                                                                                                            path : value :
-                                                                                                                let
-                                                                                                                    x = value { mount = mount ; pkgs = pkgs ; resources = resources ; } ;
-                                                                                                                    in builtins.concatStringsSep "" [ ( bash-name host-name ( builtins.elemAt path 0 ) ) "=" x.directory ] ;
-                                                                                                        string = path : value : builtins.concatStringsSep "" [ ( bash-name host-name ( builtins.elemAt path 0 ) ) "=" ( builtins.toJSON value) ] ;
-                                                                                                    }
-                                                                                                    value ;
-                                                                                            in builtins.concatStringsSep "\n" ( builtins.attrValues v ) ;
-                                                                                in builtins.mapAttrs mapper configuration ;
-                                                                        bash-name = host-name : attribute-name : builtins.concatStringsSep "" [ "V" ( builtins.hashString "sha512" ( builtins.concatStringsSep "c80c2687f8aa97ca4b3b44626d06d366a93fa8c67de5cf52d565b17b48334603aad79b5cb3d293f54f6084df628e343f71f4704bff525c840e8435e9fa1cad27" [ host-name attribute-name ] ) ) ] ;
-                                                                        dot-ssh =
-                                                                            let
-                                                                                mapper =
-                                                                                    host :
+                                                                                    fun : host :
                                                                                         {
                                                                                             address-family ? null ,
                                                                                             batch-mode ? null ,
@@ -100,78 +80,176 @@
                                                                                             user ? null ,
                                                                                             user-known-hosts-file ? null
                                                                                         } @value :
-                                                                                            let
-                                                                                                mapper =
-                                                                                                    attribute-name : attribute-value :
+                                                                                            fun host value ;
+                                                                                alpha =
+                                                                                    visitor
+                                                                                        {
+                                                                                            lambda =
+                                                                                                path : value :
+                                                                                                    if builtins.length path == 2 then
                                                                                                         let
-                                                                                                            left-name = bash-name host attribute-name ;
-                                                                                                            right-name = builtins.replaceStrings [ "-a" "-b" "-c" "-d" "-e" "-f" "-g" "-h" "-i" "-j" "-k" "-l" "-m" "-n" "-o" "-p" "-q" "-r" "-s" "-t" "-u" "-v" "-w" "-x" "-y" "-z" ] [ "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" ] ( builtins.concatStringsSep "" [ "-" attribute-name ] ) ;
+                                                                                                            resource-name = builtins.concatStringsSep "" [ "A" ( builtins.hashString "sha512" ( builtins.concatStringsSep "" ( builtins.map builtins.toJSON path ) ) ) ] ;
                                                                                                             in
-                                                                                                                if builtins.typeOf attribute-value == "lambda" then
-                                                                                                                    let
-                                                                                                                        x = attribute-value { mount = mount ; pkgs = pkgs ; resources = resources ; } ;
-                                                                                                                        in "${ right-name } ${ builtins.concatStringsSep "" [ "$" "{" left-name "}" ] }/${ x.file }"
-                                                                                                                else "${ right-name } ${ builtins.concatStringsSep "" [ "$" "{" left-name "}" ] }" ;
-                                                                                                in
-                                                                                                    builtins.concatStringsSep "\n" ( builtins.concatLists [ [ "Host ${ host }" ] ( builtins.map ( line : "  ${ line }" ) ( builtins.attrValues ( builtins.mapAttrs mapper value ) ) ) ] ) ;
-                                                                            in builtins.mapAttrs mapper configuration ;
-                                                                        exports =
-                                                                            let
-                                                                                mapper =
-                                                                                    host-name : value :
-                                                                                        let
-                                                                                            v =
-                                                                                                let
-                                                                                                    export = path : value : "export ${ bash-name host-name ( builtins.elemAt path 0 ) }" ;
-                                                                                                    in
-                                                                                                        visitor
-                                                                                                            {
-                                                                                                                bool = export ;
-                                                                                                                int = export ;
-                                                                                                                lambda = export ;
-                                                                                                                string = export ;
-                                                                                                            }
-                                                                                                            value ;
-                                                                                            in builtins.concatStringsSep "\n" ( builtins.attrValues v ) ;
-                                                                                in builtins.mapAttrs mapper configuration ;
-                                                                        roots =
-                                                                            let
-                                                                                mapper =
-                                                                                    host-name : value :
-                                                                                        let
-                                                                                            v =
-                                                                                                visitor
-                                                                                                    {
-                                                                                                        bool = path : value : [ ] ;
-                                                                                                        int = path : value : [ ] ;
-                                                                                                        lambda = path : value : [ ( builtins.concatStringsSep " " [ "ln" "--symbolic" ( builtins.concatStringsSep "" [ "\"" "$" "{" ( bash-name host-name ( builtins.elemAt path 0 ) ) "}" "\"" ] ) "/links" ] ) ] ;
-                                                                                                        string = path : value : [ ] ;
-                                                                                                    }
-                                                                                                    value ;
-                                                                                            in builtins.concatStringsSep "\n" ( builtins.concatLists ( builtins.attrValues v ) ) ;
-                                                                                in builtins.mapAttrs mapper configuration ;
-                                                                        in
-                                                                            ''
-                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues bash ) }
-                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues exports ) }
-                                                                                ${ builtins.concatStringsSep "\n" ( builtins.attrValues roots ) }
-                                                                                envsubst < ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.attrValues dot-ssh ) ) } > /mount/dot-ssh
-                                                                                chmod 0400 /mount/dot-ssh
-                                                                            '' ;
-                                                            } ;
-                                                    in "${ application }/bin/init" ;
-                                        targets = [ "dot-ssh" ] ;
-                                    } ;
+                                                                                                                [
+                                                                                                                    ''if "$HAS_STANDARD_INPUT" ; then ${ resource-name }=${ value ( setup : ''echo "$STANDARD_INPUT" | ${ setup } "$@"'' ) } ; else ${ resource-name }=${ value ( setup : ''${ setup } "$@"'' ) } ; fi''
+                                                                                                                    ''root-resource ${ resource-name }''
+                                                                                                                    ''ln --symbolic ${ resource-name } /mount/stage/${ resource-name }''
+                                                                                                                ]
+                                                                                                    else builtins.throw "ssh resources is wrongly nested.  values must be two levels deep, but ${ builtins.toJSON path } is ${ builtins.toString ( builtins.length path ) } levels deep." ;
+                                                                                            list = concat.list ;
+                                                                                            set = concat.set ;
+                                                                                        }
+                                                                                        implementation-resources ;
+                                                                                beta =
+                                                                                    let
+                                                                                        string =
+                                                                                            path : value : check :
+                                                                                                if builtins.length path != 2 then builtins.throw "ssh configuration is wrongly nested.  values must be two levels deep, but ${ builtins.toJSON path } is ${ builtins.toString ( builtins.length path ) } levels deep"
+                                                                                                else if check then
+                                                                                                    let
+                                                                                                        host = builtins.getAttr implementation-resources host-name ;
+                                                                                                        host-name = builtins.elemAt path 0 ;
+                                                                                                        value-name = builtins.concatStringsSep "" [ "B" ( builtins.hashString "sha512" ( builtins.concatStringsSep "" ( builtins.map builtins.toJSON path ) ) ) ] ;
+                                                                                                        in
+                                                                                                            if builtins.typeOf implementation-resources != "set" then builtins.throw "ssh configuration is wrongly nested.  resources must be a set"
+                                                                                                            else if ! builtins.hasAttr host-name implementation-resources then builtins.throw "ssh configuration is wrongly nested.  resources must have ${ host-name }"
+                                                                                                            else if builtins.typeOf host != "lambda" then builtins.throw "ssh configuration is wrongly nested.  host ${ builtins.toJSON path } must be a lambda"
+                                                                                                            else [ ''export ${ value-name }=${ value }'' ]
+                                                                                                else
+                                                                                                    let
+                                                                                                        value-name = builtins.concatStringsSep "" [ "B" ( builtins.hashString "sha512" ( builtins.concatStringsSep "" ( builtins.map builtins.toJSON path ) ) ) ] ;
+                                                                                                        in [ ''export ${ value-name }=${ value }'' ] ;
+                                                                                        in
+                                                                                            visitor
+                                                                                                {
+                                                                                                    bool = path : value : string path ( if value then "Yes" else "No" ) false ;
+                                                                                                    float = path : value : string path ( builtins.toString value ) false ;
+                                                                                                    int = path : value : string path ( builtins.toString value ) false ;
+                                                                                                    lambda =
+                                                                                                        path : value :
+                                                                                                            let
+                                                                                                                resource-name = builtins.concatStringsSep "" [ "A" ( builtins.hashString "sha512" ( builtins.concatStringsSep "" ( builtins.map builtins.toJSON path ) ) ) ] ;
+                                                                                                                variable-name = builtins.concatStringsSep "" [ "$" "{" resource-name "}" ] ;
+                                                                                                                in string ( builtins.concatStringsSep "/" [ mount "stage" variable-name ] ) true ;
+                                                                                                    list = concat.list ;
+                                                                                                    null = path : value : builtins.throw "ssh configuration is misconfigured at ${ builtins.toJSON path }  null values are not allowed" ;
+                                                                                                    path = path : value : string path ( builtins.toString value ) false ;
+                                                                                                    set = concat.set ;
+                                                                                                    string = path : value : string path ''"$( cat ${ builtins.toFile "string" value } )" || failure 57b0ea53'' false ;
+                                                                                                }
+                                                                                                configuration ;
+                                                                                concat =
+                                                                                    {
+                                                                                        list = path : list : if builtins.length path > 2 then builtins.throw "ssh configuration is wrongly nested at ${ builtins.toJSON path }.  paths may be no deeper than 2 but this is ${ builtins.toString ( builtins.length path ) }" else builtins.concatLists lists ;
+                                                                                        set = path : set : if builtins.length path > 2 then builtins.throw "ssh configuration is wrongly nested at ${ builtins.toJSON path }.  set paths may be no deeper than 2 but this is ${ builtins.toString ( builtins.length path ) }" else builtins.concatLists ( builtins.attrValues set ) ;
+                                                                                    } ;
+                                                                                gamma =
+                                                                                    let
+                                                                                        mapper =
+                                                                                            host :
+                                                                                                {
+                                                                                                    address-family ? null ,
+                                                                                                    batch-mode ? null ,
+                                                                                                    bind-address ? null ,
+                                                                                                    canonical-domains ? null ,
+                                                                                                    canonicalize-fallback-local ? null ,
+                                                                                                    canonicalize-hostname ? null ,
+                                                                                                    check-host-ip ? null ,
+                                                                                                    challenge-response-authentication ? null ,
+                                                                                                    ciphers ? null ,
+                                                                                                    compression ? null ,
+                                                                                                    connect-timeout ? null ,
+                                                                                                    control-master ? null ,
+                                                                                                    control-path ? null ,
+                                                                                                    forward-agent ? null ,
+                                                                                                    gateway-ports ? null ,
+                                                                                                    gssapi-authentication ? null ,
+                                                                                                    gssapi-delegate-credentials ? null ,
+                                                                                                    gssapi-key-exchange ? null ,
+                                                                                                    gssapi-renewal-forces-rekey ? null ,
+                                                                                                    gssapi-trust-dns ? null ,
+                                                                                                    host-name ? null ,
+                                                                                                    hostkey-alias ? null ,
+                                                                                                    identities-only ? null ,
+                                                                                                    identity-agent ? null ,
+                                                                                                    identity-file ? null ,
+                                                                                                    ignore-unknown ? null ,
+                                                                                                    ip-qos ? null ,
+                                                                                                    kbd-interactive-authentication ? null ,
+                                                                                                    kbd-interactive-devices ? null ,
+                                                                                                    kex-algorithms ? null ,
+                                                                                                    local-forward ? null ,
+                                                                                                    log-level ? null ,
+                                                                                                    match ? null ,
+                                                                                                    no-host-authentication-for-localhost ? null ,
+                                                                                                    password-authentication ? null ,
+                                                                                                    permit-local-command ? null ,
+                                                                                                    permit-remote-open ? null ,
+                                                                                                    pkcs11-provider ? null ,
+                                                                                                    port ? null ,
+                                                                                                    preferred-authentications ? null ,
+                                                                                                    protocol ? null ,
+                                                                                                    proxy-command ? null ,
+                                                                                                    proxy-jump ? null ,
+                                                                                                    proxy-use-fdpass ? null ,
+                                                                                                    pubkey-accepted-key-types ? null ,
+                                                                                                    pubkey-authentication ? null ,
+                                                                                                    rekey-limit ? null ,
+                                                                                                    remote-forward ? null ,
+                                                                                                    server-alive-count-max ? null ,
+                                                                                                    server-alive-interval ? null ,
+                                                                                                    sessiontype ? null ,
+                                                                                                    strict-host-key-checking ? null ,
+                                                                                                    user ? null ,
+                                                                                                    user-known-hosts-file ? null
+                                                                                                } @configuration :
+                                                                                                    let
+                                                                                                        mapper =
+                                                                                                            name : value :
+                                                                                                                let
+                                                                                                                    configuration-name = builtins.replaceStrings [ "-a" "-b" "-c" "-d" "-e" "-f" "-g" "-h" "-i" "-j" "-k" "-l" "-m" "-n" "-o" "-p" "-q" "-r" "-s" "-t" "-u" "-v" "-w" "-x" "-y" "-z" ] [ "A" "" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" ] "_${ name }" ;
+                                                                                                                    string =
+                                                                                                                        ''
+                                                                                                                          ${ configuration-name }=${ builtins.concatStringsSep "" [ "$" "{" value "}" ] }
+                                                                                                                        '' ;
+                                                                                                                    in "  ${ string }" ;
+                                                                                                        in builtins.concatStringsSep "\n" ( builtins.concatLists [ [ "Host ${ host }" ] ( builtins.attrValues ( builtins.map mapper configuration ) ) ] ) ;
+                                                                                        in builtins.mapAttrs mapper configuration ;
+                                                                                in
+                                                                                    ''
+                                                                                        mkdir --parents /mount/stage
+                                                                                        if [[ -t 0 ]]
+                                                                                        then
+                                                                                            # shellcheck disable=SC2034
+                                                                                            HAS_STANDARD_INPUT=false
+                                                                                            # shellcheck disable=SC2034
+                                                                                            STANDARD_INPUT=
+                                                                                        else
+                                                                                            # shellcheck disable=SC2034
+                                                                                            HAS_STANDARD_INPUT=true
+                                                                                            # shellcheck disable=SC2034
+                                                                                            STANDARD_INPUT="$( cat )" || failure ca6dd82a
+                                                                                        fi
+                                                                                        ${ builtins.concatStringsSep "\n" alpha }
+                                                                                        ${ builtins.concatStringsSep "\n" beta }
+                                                                                        envsubst < ${ builtins.toFile "config" ( builtins.concatStringSep "\n" gamma ) } > /mount/config
+                                                                                        chmod 0400 /mount/config
+                                                                                    '' ;
+                                                                    } ;
+                                                            init-resources = resources ;
+                                                            in "${ application }/bin/init" ;
+                                                targets = [ "config" "stage" ] ;
+                                            } ;
                             in
                                 {
                                     check =
                                         {
                                             configuration ,
                                             expected ,
-                                            failure ,
+                                            implementation-resources ,
+                                            init-resources ? null ,
                                             mount ? null ,
-                                            pkgs ? null ,
-                                            resources ? null
+                                            pkgs ? null
                                         } :
                                             pkgs.stdenv.mkDerivation
                                                 {
@@ -189,15 +267,15 @@
                                                                         runtimeInputs = [ pkgs.coreutils failure ] ;
                                                                         text =
                                                                             let
-                                                                                init = instance.init { mount = mount ; pkgs = pkgs ; resources = resources ; } ;
-                                                                                instance = implementation configuration ;
+                                                                                init = instance.init { mount = mount ; pkgs = pkgs ; resources = init-resources ; } ;
+                                                                                instance = implementation { configuration = configuration ; resources = implementation-resources ; } ;
                                                                                 in
                                                                                     ''
                                                                                         OUT="$1"
                                                                                         touch "$OUT"
-                                                                                        ${ if [ "init" "targets" ] != builtins.attrNames instance then ''failure 3186419e "We expected the dot-ssh names to be init targets but we observed ${ builtins.toJSON ( builtins.attrNames instance ) }"'' else "#" }
-                                                                                        ${ if expected != init then ''failure 9cc61c07 "We expected the dot-ssh init to be ${ builtins.toString expected } but we observed ${ builtins.toString init }"'' else "#" }
-                                                                                        ${ if [ "dot-ssh" ] != instance.targets then ''failure 09600650 "We expected the dot-ssh targets to be dot-ssh but we observed ${ builtins.toJSON instance.targets }"'' else "#" }
+                                                                                        ${ if [ "init" "targets" ] != builtins.attrNames instance then ''failure dot-ssh 3186419e "We expected the dot-ssh names to be init targets but we observed ${ builtins.toJSON ( builtins.attrNames instance ) }"'' else "#" }
+                                                                                        ${ if expected != init then ''failure 9cc61c07 dot-ssh "We expected the init to be ${ builtins.toString expected } but we observed ${ builtins.toString init }"'' else "#" }
+                                                                                        ${ if [ "config" "stage" ] != instance.targets then ''failure 09600650 dot-ssh "We expected the targets to be dot-ssh but we observed ${ builtins.toJSON instance.targets }"'' else "#" }
                                                                                     '' ;
                                                                     }
                                                             )
