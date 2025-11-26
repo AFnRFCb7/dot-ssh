@@ -39,9 +39,9 @@
                                                                                                 #                 ]
                                                                                                 #     else builtins.throw "ssh resources is wrongly nested.  values must be two levels deep, but ${ builtins.toJSON path } is ${ builtins.toString ( builtins.length path ) } levels deep." ;
                                                                                             list = concat.list ;
-                                                                                            set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
+                                                                                            set = path : set : builtins.trace "HI" ( builtins.concatLists ( builtins.attrValues set ) ) ;
                                                                                         }
-                                                                                        ( builtins.trace ( builtins.concatStringsSep " ; " ( builtins.attrNames implementation-resources ) ) implementation-resources ) ;
+                                                                                        implementation-resources ;
                                                                                 beta =
                                                                                     let
                                                                                         string =
