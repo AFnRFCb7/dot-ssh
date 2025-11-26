@@ -41,7 +41,7 @@
                                                                                             list = concat.list ;
                                                                                             set = concat.set ;
                                                                                         }
-                                                                                        ( builtins.trace ( builtins.typeOf implementation-resources ) implementation-resources ) ;
+                                                                                        ( builtins.trace ( builtins.concatStringsSep " ; " ( builtins.attrName implementation-resources ) ) implementation-resources ) ;
                                                                                 beta =
                                                                                     let
                                                                                         string =
