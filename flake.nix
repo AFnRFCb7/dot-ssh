@@ -231,9 +231,9 @@
                                                                                             # shellcheck disable=SC2034
                                                                                             STANDARD_INPUT="$( cat )" || failure ca6dd82a
                                                                                         fi
-                                                                                        ${ builtins.concatStringsSep "\n" alpha }
-                                                                                        ${ builtins.concatStringsSep "\n" beta }
-                                                                                        envsubst < ${ builtins.toFile "config" ( builtins.concatStringSep "\n" gamma ) } > /mount/config
+                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues alpha ) }
+                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues beta ) }
+                                                                                        envsubst < ${ builtins.toFile "config" ( builtins.concatStringSep "\n" ( builtins.attrValues gamma ) ) } > /mount/config
                                                                                         chmod 0400 /mount/config
                                                                                     '' ;
                                                                     } ;
