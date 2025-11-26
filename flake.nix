@@ -232,9 +232,7 @@
                                                                                             STANDARD_INPUT="$( cat )" || failure ca6dd82a
                                                                                         fi
                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues alpha ) }
-                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues beta ) }
-                                                                                        envsubst < ${ builtins.toFile "config" ( builtins.concatStringSep "\n" ( builtins.attrValues gamma ) ) } > /mount/config
-                                                                                        chmod 0400 /mount/config
+
                                                                                     '' ;
                                                                     } ;
                                                             init-resources = resources ;
