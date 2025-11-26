@@ -269,7 +269,7 @@
                                                                         text =
                                                                             let
                                                                                 init = instance.init { mount = mount ; pkgs = pkgs ; resources = init-resources ; } ;
-                                                                                instance = implementation { configuration = configuration ; resources = implementation-resources ; } ;
+                                                                                instance = implementation { configuration = builtins.trace "f9dc123ba857fa10a8cdf9cf943787ef9cc8586b54a41d797c1573d2557990b82012cd8be6c653fe28e6f90d0d00aa3b724709c6db4f2006698104739ca0fde1" configuration ; resources = implementation-resources ; } ;
                                                                                 in
                                                                                     ''
                                                                                         OUT="$1"
