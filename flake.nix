@@ -10,7 +10,7 @@
                             implementation =
                                 { configuration ? { } , resources ? { } } :
                                     let
-                                        implementation-resources = builtins.trace "47ccf522af219de07ee3180fed6236b5bc303a233383faac94ae73ab9819cc39a2658a694b5ef9f3dbaecdcee9baf750673784d020b8611633766b06e13447fe" resources ;
+                                        implementation-resources = resources ;
                                         in
                                             {
                                                 init =
@@ -100,7 +100,7 @@
                                                                                             list = concat.list ;
                                                                                             set = concat.set ;
                                                                                         }
-                                                                                        ( builtins.trace "6227b707c9da7c47bee35d9db6ffe1986c6115a01a86d926605f97180c50caeb139288c7fc13bdc11e3008d37b638fe2db1181805c1f559af426cbdc596dc639" implementation-resources ) ;
+                                                                                        implementation-resources ;
                                                                                 beta =
                                                                                     let
                                                                                         string =
@@ -112,8 +112,8 @@
                                                                                                         host-name = builtins.elemAt path 0 ;
                                                                                                         value-name = builtins.concatStringsSep "" [ "B" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
                                                                                                         in
-                                                                                                            if builtins.typeOf ( builtins.trace "2ed1c0eba04dde99441f3c4670dd3e5fdecae977a2c3182fe4c304dedfdc157bcbb5ba1f5cf1f773982a0961408a2d724f487df2a711d8c0e5ce26016a757c04" implementation-resources ) != "set" then builtins.throw "ssh configuration is wrongly nested.  resources must be a set"
-                                                                                                            else if ! builtins.hasAttr host-name ( builtins.trace "642fd3e25d5660d6717c0d06f7b7044b6a553a6c65b0b53c55b22362d34bcd16d0edb2a6425204f042ef14f52fabba9fca65fc6a2acfe4450179c42a77537ab2" implementation-resources ) then builtins.throw "ssh configuration is wrongly nested.  resources must have ${ host-name }"
+                                                                                                            if builtins.typeOf implementation-resources != "set" then builtins.throw "ssh configuration is wrongly nested.  resources must be a set"
+                                                                                                            else if ! builtins.hasAttr host-name implementation-resources then builtins.throw "ssh configuration is wrongly nested.  resources must have ${ host-name }"
                                                                                                             else if builtins.typeOf host != "lambda" then builtins.throw "ssh configuration is wrongly nested.  host ${ builtins.toJSON path } must be a lambda"
                                                                                                             else [ ''export ${ value-name }=${ value }'' ]
                                                                                                 else
