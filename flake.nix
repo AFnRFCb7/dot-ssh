@@ -41,7 +41,7 @@
                                                                                             list = concat.list ;
                                                                                             set = concat.set ;
                                                                                         }
-                                                                                        ( builtins.trace ( builtins.typeOf implementation-resources )implementation-resources ) ;
+                                                                                        ( builtins.trace ( builtins.typeOf implementation-resources ) implementation-resources ) ;
                                                                                 beta =
                                                                                     let
                                                                                         string =
@@ -207,7 +207,7 @@
                                                                         text =
                                                                             let
                                                                                 init = instance.init { mount = mount ; pkgs = pkgs ; resources = init-resources ; } ;
-                                                                                instance = implementation { configuration = configuration ; resources = builtins.trace "d95f8e7004bb515389f2ae85601c40b56e866464450c0f236894266f8ac3edfdfc99dc35e73be50aea023966b9f2bbc042d95f314fb701f45a3d4a20ac92b663" implementation-resources ; } ;
+                                                                                instance = implementation { configuration = configuration ; resources = implementation-resources ; } ;
                                                                                 in
                                                                                     ''
                                                                                         OUT="$1"
