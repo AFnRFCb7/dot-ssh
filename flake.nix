@@ -28,6 +28,7 @@
                                                                                         {
                                                                                             lambda =
                                                                                                 path : value :
+                                                                                                    builtins.throw "WTF" (
                                                                                                     if builtins.length path == 2 then
                                                                                                         let
                                                                                                             resource-name = builtins.concatStringsSep "" [ "A" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
@@ -37,7 +38,7 @@
                                                                                                                     # ''root-resource ${ resource-name }''
                                                                                                                     # ''ln --symbolic ${ resource-name } /mount/stage/${ resource-name }''
                                                                                                                 ]
-                                                                                                    else builtins.throw "ssh resources is wrongly nested.  values must be two levels deep, but ${ builtins.toJSON path } is ${ builtins.toString ( builtins.length path ) } levels deep." ;
+                                                                                                    else builtins.throw "ssh resources is wrongly nested.  values must be two levels deep, but ${ builtins.toJSON path } is ${ builtins.toString ( builtins.length path ) } levels deep." ) ;
                                                                                             list = concat.list ;
                                                                                             set = concat.set ;
                                                                                         }
