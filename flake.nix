@@ -23,22 +23,21 @@
                                                                         runtimeInputs = [ pkgs.coreutils pkgs.gettext ] ;
                                                                         text =
                                                                             let
-                                                                                alpha = builtins.throw "WTF" ;
-                                                                                alpha1 =
+                                                                                alpha =
                                                                                     visitor
                                                                                         {
                                                                                             lambda =
-                                                                                                path : value :
-                                                                                                    if builtins.length path == 2 then
-                                                                                                        let
-                                                                                                            resource-name = builtins.concatStringsSep "" [ "A" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
-                                                                                                            in
-                                                                                                                [
-                                                                                                                    # ''if "$HAS_STANDARD_INPUT" ; then ${ resource-name }=${ value ( setup : ''echo "$STANDARD_INPUT" | ${ setup } "$@"'' ) } ; else ${ resource-name }=${ value ( setup : ''${ setup } "$@"'' ) } ; fi''
-                                                                                                                    # ''root-resource ${ resource-name }''
-                                                                                                                    # ''ln --symbolic ${ resource-name } /mount/stage/${ resource-name }''
-                                                                                                                ]
-                                                                                                    else builtins.throw "ssh resources is wrongly nested.  values must be two levels deep, but ${ builtins.toJSON path } is ${ builtins.toString ( builtins.length path ) } levels deep." ;
+                                                                                                path : value : builtins.throw "WTF" ;
+                                                                                                #     if builtins.length path == 2 then
+                                                                                                #         let
+                                                                                                #             resource-name = builtins.concatStringsSep "" [ "A" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
+                                                                                                #             in
+                                                                                                #                 [
+                                                                                                #                     # ''if "$HAS_STANDARD_INPUT" ; then ${ resource-name }=${ value ( setup : ''echo "$STANDARD_INPUT" | ${ setup } "$@"'' ) } ; else ${ resource-name }=${ value ( setup : ''${ setup } "$@"'' ) } ; fi''
+                                                                                                #                     # ''root-resource ${ resource-name }''
+                                                                                                #                     # ''ln --symbolic ${ resource-name } /mount/stage/${ resource-name }''
+                                                                                                #                 ]
+                                                                                                #     else builtins.throw "ssh resources is wrongly nested.  values must be two levels deep, but ${ builtins.toJSON path } is ${ builtins.toString ( builtins.length path ) } levels deep." ;
                                                                                             list = concat.list ;
                                                                                             set = concat.set ;
                                                                                         }
