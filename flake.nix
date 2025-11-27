@@ -27,17 +27,17 @@
                                                                                     visitor
                                                                                         {
                                                                                             lambda =
-                                                                                                path : value :
-                                                                                                    if builtins.length path == 2 then
-                                                                                                        let
-                                                                                                            resource-name = builtins.concatStringsSep "" [ "A" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
-                                                                                                            in
-                                                                                                                [
-                                                                                                                    ''${ resource-name }=${ resource-name }=${ value primary }''
-                                                                                                                    ''root-resource ${ resource-name }''
-                                                                                                                    ''ln --symbolic ${ resource-name } /mount/stage/${ resource-name }''
-                                                                                                                ]
-                                                                                                   else builtins.throw "ssh resources is wrongly nested.  values must be two levels deep, but ${ builtins.toJSON path } is ${ builtins.toString ( builtins.length path ) } levels deep." ;
+                                                                                                path : value : [ "# lambda" ] ;
+                                                                                                #     if builtins.length path == 2 then
+                                                                                                #         let
+                                                                                                #             resource-name = builtins.concatStringsSep "" [ "A" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
+                                                                                                #             in
+                                                                                                #                 [
+                                                                                                #                     ''${ resource-name }=${ resource-name }=${ value primary }''
+                                                                                                #                     ''root-resource ${ resource-name }''
+                                                                                                #                     ''ln --symbolic ${ resource-name } /mount/stage/${ resource-name }''
+                                                                                                #                 ]
+                                                                                                #    else builtins.throw "ssh resources is wrongly nested.  values must be two levels deep, but ${ builtins.toJSON path } is ${ builtins.toString ( builtins.length path ) } levels deep." ;
                                                                                             list = [ "# list" ] ; # concat.list ;
                                                                                             set = [ "# set" ] ; # concat.set ;
                                                                                         }
