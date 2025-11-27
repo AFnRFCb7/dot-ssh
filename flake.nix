@@ -34,7 +34,7 @@
                                                                                                             variable-name = builtins.concatStringsSep "" [ "$" resource-name ] ;
                                                                                                             in
                                                                                                                 [
-                                                                                                                    ''${ resource-name }=${ resource-name }=${ value primary }''
+                                                                                                                    ''${ resource-name }=${ value primary }''
                                                                                                                     ''root-resource "${ variable-name }"''
                                                                                                                     ''ln --symbolic "${ variable-name }" /mount/stage/${ resource-name }''
                                                                                                                     ''export ${ resource-name }''
