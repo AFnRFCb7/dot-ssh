@@ -155,7 +155,6 @@
                                                                                                             name : value :
                                                                                                                 let
                                                                                                                     configuration-name = builtins.replaceStrings [ "-a" "-b" "-c" "-d" "-e" "-f" "-g" "-h" "-i" "-j" "-k" "-l" "-m" "-n" "-o" "-p" "-q" "-r" "-s" "-t" "-u" "-v" "-w" "-x" "-y" "-z" ] [ "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" ] "-${ name }" ;
-                                                                                                                    path = builtins.trace "HOST_NAME=${ host-name } NAME=${ name }" [ host-name name ] ;
                                                                                                                     string = "${ configuration-name }=${ builtins.concatStringsSep "" [ "$" "{" value-name "}" ] }" ;
                                                                                                                     value-name = builtins.concatStringsSep "" [ "B" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
                                                                                                                     in "  ${ string }" ;
