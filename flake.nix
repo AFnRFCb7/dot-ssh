@@ -33,7 +33,7 @@
                                                                                                             resource-name = builtins.concatStringsSep "" [ "A" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
                                                                                                             in
                                                                                                                 [
-                                                                                                                    ''${ resource-name }= ; else ${ resource-name }=${ value primary }''
+                                                                                                                    ''${ resource-name }=${ resource-name }=${ value primary }''
                                                                                                                     ''root-resource ${ resource-name }''
                                                                                                                     ''ln --symbolic ${ resource-name } /mount/stage/${ resource-name }''
                                                                                                                 ]
