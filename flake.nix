@@ -26,7 +26,7 @@
                                                                                 alpha =
                                                                                     visitor
                                                                                         {
-                                                                                            lambda =
+                                                                                            lambda2 =
                                                                                                 path : value :
                                                                                                     if builtins.length path == 2 then
                                                                                                         let
