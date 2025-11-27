@@ -48,20 +48,20 @@
                                                                                         string =
                                                                                             path : value : check :
                                                                                                 if builtins.length path != 2 then builtins.throw "ssh configuration is wrongly nested.  values must be two levels deep, but ${ builtins.toJSON path } is ${ builtins.toString ( builtins.length path ) } levels deep"
-                                                                                                # else if check then
-                                                                                                #     let
-                                                                                                #         attribute = builtins.getAttr attribute-name host ;
-                                                                                                #         attribute-name = builtins.elemAt path 1 ;
-                                                                                                #         host = builtins.getAttr host-name implementation-resources ;
-                                                                                                #         host-name = builtins.elemAt path 0 ;
-                                                                                                #         value-name = builtins.concatStringsSep "" [ "B" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
-                                                                                                #         in
-                                                                                                #             if builtins.typeOf implementation-resources != "set" then builtins.throw "ssh configuration is wrongly nested.  resources must be a set"
-                                                                                                #             else if ! builtins.hasAttr host-name implementation-resources then builtins.throw "ssh configuration is wrongly nested.  resources must have ${ host-name }"
-                                                                                                #             else if ! builtins.typeOf host != "set" then builtins.throw "ssh configuration is wrongly nested.  host ${ host-name } must be a set but is a ${ builtins.typeOf host }"
-                                                                                                #             else if ! builtins.hasAttr attribute-name host then builtins.throw "ssh configuration is wrongly nested.  host ${ host-name } must have ${ attribute-name }"
-                                                                                                #             else if ! builtins.typeOf attribute != "lambda" then builtins.throw "ssh configuration is wrongly nested.  attribute ${ attribute-name } of host ${ host-name } must be a lambda"
-                                                                                                #            else [ ''export ${ value-name }="${ value }"'' ]
+                                                                                                else if check then
+                                                                                                    let
+                                                                                                        attribute = builtins.getAttr attribute-name host ;
+                                                                                                        attribute-name = builtins.elemAt path 1 ;
+                                                                                                        host = builtins.getAttr host-name implementation-resources ;
+                                                                                                        host-name = builtins.elemAt path 0 ;
+                                                                                                        value-name = builtins.concatStringsSep "" [ "B" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
+                                                                                                        in
+                                                                                                            if builtins.typeOf implementation-resources != "set" then builtins.throw "ssh configuration is wrongly nested.  resources must be a set"
+                                                                                                            else if ! builtins.hasAttr host-name implementation-resources then builtins.throw "ssh configuration is wrongly nested.  resources must have ${ host-name }"
+                                                                                                            else if ! builtins.typeOf host != "set" then builtins.throw "ssh configuration is wrongly nested.  host ${ host-name } must be a set but is a ${ builtins.typeOf host }"
+                                                                                                            else if ! builtins.hasAttr attribute-name host then builtins.throw "ssh configuration is wrongly nested.  host ${ host-name } must have ${ attribute-name }"
+                                                                                                            else if ! builtins.typeOf attribute != "lambda" then builtins.throw "ssh configuration is wrongly nested.  attribute ${ attribute-name } of host ${ host-name } must be a lambda"
+                                                                                                           else [ ''export ${ value-name }=${ value }'' ]
                                                                                                 else
                                                                                                     let
                                                                                                         value-name = builtins.concatStringsSep "" [ "B" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
@@ -77,7 +77,7 @@
                                                                                                             let
                                                                                                                 resource-name = builtins.concatStringsSep "" [ "A" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
                                                                                                                 variable-name = builtins.concatStringsSep "" [ "$" "{" resource-name "}" ] ;
-                                                                                                                in string path ( builtins.concatStringsSep "/" [ mount "stage" variable-name ( value null ) ] ) true ;
+                                                                                                                in string path ( builtins.concatStringsSep "/" [ mount "stage" variable-name ( value "c89d3a8b" ) ] ) true ;
                                                                                                     list = concat.list ;
                                                                                                     null = path : value : builtins.throw "ssh configuration is misconfigured at ${ builtins.toJSON path }  null values are not allowed" ;
                                                                                                     path = path : value : string path ( builtins.toString value ) false ;
