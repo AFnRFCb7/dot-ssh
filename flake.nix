@@ -85,7 +85,7 @@
                                                                                         list = path : list : if builtins.length path > 2 then builtins.throw "ssh configuration is wrongly nested at ${ builtins.toJSON path }.  paths may be no deeper than 2 but this is ${ builtins.toString ( builtins.length path ) }" else builtins.concatLists list ;
                                                                                         set = path : set : if builtins.length path > 2 then builtins.throw "ssh configuration is wrongly nested at ${ builtins.toJSON path }.  set paths may be no deeper than 2 but this is ${ builtins.toString ( builtins.length path ) }" else builtins.concatLists ( builtins.attrValues set ) ;
                                                                                     } ;
-                                                                                gamma =/home/emory/resources/mounts/0000000000000142/repository
+                                                                                gamma =
                                                                                     let
                                                                                         mapper =
                                                                                             host :
