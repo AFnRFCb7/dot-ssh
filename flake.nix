@@ -179,6 +179,8 @@
                                                                                         fi
                                                                                         ${ builtins.concatStringsSep "\n" alpha }
                                                                                         ${ builtins.concatStringsSep "\n" beta }
+                                                                                        envsub < ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.attrValues gamma ) ) } > /mount/config
+                                                                                        chmod 0400 /mount/config
                                                                                     '' ;
                                                                     } ;
                                                             init-resources = resources ;
