@@ -27,20 +27,19 @@
                                                                                     visitor
                                                                                         {
                                                                                             lambda =
-                                                                                                path : value : builtins.throw "WTF" ;
-                                                                                                #     if builtins.length path == 2 then
-                                                                                                #         let
-                                                                                                #             resource-name = builtins.concatStringsSep "" [ "A" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
-                                                                                                #             in
-                                                                                                #                 [
-                                                                                                #                     # ''if "$HAS_STANDARD_INPUT" ; then ${ resource-name }=${ value ( setup : ''echo "$STANDARD_INPUT" | ${ setup } "$@"'' ) } ; else ${ resource-name }=${ value ( setup : ''${ setup } "$@"'' ) } ; fi''
-                                                                                                #                     # ''root-resource ${ resource-name }''
-                                                                                                #                     # ''ln --symbolic ${ resource-name } /mount/stage/${ resource-name }''
-                                                                                                #                 ]
-                                                                                                #     else builtins.throw "ssh resources is wrongly nested.  values must be two levels deep, but ${ builtins.toJSON path } is ${ builtins.toString ( builtins.length path ) } levels deep." ;
+                                                                                                path : value :
+                                                                                                    if builtins.length path == 2 then
+                                                                                                        let
+                                                                                                            resource-name = builtins.concatStringsSep "" [ "A" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
+                                                                                                            in
+                                                                                                                [
+                                                                                                                    # ''if "$HAS_STANDARD_INPUT" ; then ${ resource-name }=${ value ( setup : ''echo "$STANDARD_INPUT" | ${ setup } "$@"'' ) } ; else ${ resource-name }=${ value ( setup : ''${ setup } "$@"'' ) } ; fi''
+                                                                                                                    # ''root-resource ${ resource-name }''
+                                                                                                                    # ''ln --symbolic ${ resource-name } /mount/stage/${ resource-name }''
+                                                                                                                ]
+                                                                                                    else builtins.throw "ssh resources is wrongly nested.  values must be two levels deep, but ${ builtins.toJSON path } is ${ builtins.toString ( builtins.length path ) } levels deep." ;
                                                                                             list = concat.list ;
-                                                                                            set = path : set : builtins.trace "HI" ( builtins.concatLists ( builtins.attrValues set ) ) ;
-                                                                                            string = path : value : builtins.throw "WTF string ${ value }" ;
+                                                                                            set = concat.set ;
                                                                                         }
                                                                                         implementation-resources ;
                                                                                 beta =
@@ -173,7 +172,9 @@
                                                                                             # shellcheck disable=SC2034
                                                                                             STANDARD_INPUT="$( cat )" || failure ca6dd82a
                                                                                         fi
+                                                                                        # BEFORE ALPHA
                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrNames alpha ) }
+                                                                                        # AFTER ALPHA
                                                                                     '' ;
                                                                     } ;
                                                             init-resources = resources ;
