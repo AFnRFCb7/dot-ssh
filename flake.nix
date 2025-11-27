@@ -39,7 +39,7 @@
                                                                                                                 ]
                                                                                                     else builtins.throw "ssh resources is wrongly nested.  values must be two levels deep, but ${ builtins.toJSON path } is ${ builtins.toString ( builtins.length path ) } levels deep." ;
                                                                                             list = concat.list ;
-                                                                                            set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
+                                                                                            set = concat.set ;
                                                                                         }
                                                                                         implementation-resources ;
                                                                                 beta =
@@ -173,7 +173,7 @@
                                                                                             STANDARD_INPUT="$( cat )" || failure ca6dd82a
                                                                                         fi
                                                                                         # BEFORE ALPHA
-                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrNames alpha ) }
+                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues alpha ) }
                                                                                         # AFTER ALPHA
                                                                                     '' ;
                                                                     } ;
