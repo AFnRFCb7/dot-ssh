@@ -61,7 +61,7 @@
                                                                                                             else if builtins.typeOf host != "set" then builtins.throw "ssh configuration is wrongly nested.  host ${ host-name } must be a set but is a ${ builtins.typeOf host }"
                                                                                                             else if ! builtins.hasAttr attribute-name host then builtins.throw "ssh configuration is wrongly nested.  host ${ host-name } must have ${ attribute-name }"
                                                                                                             else if builtins.typeOf attribute != "lambda" then builtins.throw "ssh configuration is wrongly nested.  attribute ${ attribute-name } of host ${ host-name } must be a lambda"
-                                                                                                           else [ ''export ${ value-name }=${ value }'' ]
+                                                                                                           else [ ''export ${ value-name }="${ value }"'' ]
                                                                                                 else
                                                                                                     let
                                                                                                         value-name = builtins.concatStringsSep "" [ "B" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
@@ -77,7 +77,7 @@
                                                                                                             let
                                                                                                                 resource-name = builtins.concatStringsSep "" [ "A" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
                                                                                                                 variable-name = builtins.concatStringsSep "" [ "$" "{" resource-name "}" ] ;
-                                                                                                                in string path ( builtins.concatStringsSep "/" [ mount "stage" variable-name ( value "c89d3a8b" ) ] ) true ;
+                                                                                                                in string path ( builtins.concatStringsSep "/" [ mount "stage" variable-name ( value null ) ] ) true ;
                                                                                                     list = concat.list ;
                                                                                                     null = path : value : builtins.throw "ssh configuration is misconfigured at ${ builtins.toJSON path }  null values are not allowed" ;
                                                                                                     path = path : value : string path ( builtins.toString value ) false ;
