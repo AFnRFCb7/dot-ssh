@@ -175,7 +175,9 @@
                                                                                             # shellcheck disable=SC2034
                                                                                             STANDARD_INPUT="$( cat )" || failure ca6dd82a
                                                                                         fi
-                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues implementation-resources ) }
+                                                                                        cat <<EOF
+                                                                                        ${ builtins.toJSON ( builtins.attrValues alpha ) }
+                                                                                        EOF
                                                                                     '' ;
                                                                     } ;
                                                             init-resources = resources ;
