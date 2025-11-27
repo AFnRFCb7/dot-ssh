@@ -27,7 +27,7 @@
                                                                                     visitor
                                                                                         {
                                                                                             lambda =
-                                                                                                path : value : [ "# lambda" ] ;
+                                                                                                path : value : [ "# lambda sdaf" ] ;
                                                                                                 #     if builtins.length path == 2 then
                                                                                                 #         let
                                                                                                 #             resource-name = builtins.concatStringsSep "" [ "A" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
@@ -39,7 +39,7 @@
                                                                                                 #                 ]
                                                                                                 #    else builtins.throw "ssh resources is wrongly nested.  values must be two levels deep, but ${ builtins.toJSON path } is ${ builtins.toString ( builtins.length path ) } levels deep." ;
                                                                                             list = path : list : [ "# list" ] ; # concat.list ;
-                                                                                            set = path : set : [ "# set" ] ; # concat.set ;
+                                                                                            set = path : set : builtins.throw "SET" ; # concat.set ;
                                                                                         }
                                                                                         implementation-resources ;
                                                                                 beta =
