@@ -39,7 +39,7 @@
                                                                                                 #                 ]
                                                                                                 #    else builtins.throw "ssh resources is wrongly nested.  values must be two levels deep, but ${ builtins.toJSON path } is ${ builtins.toString ( builtins.length path ) } levels deep." ;
                                                                                             list = concat.list ;
-                                                                                            set = path : set : builtins.concatLists set ;
+                                                                                            set = concat.set ;
                                                                                         }
                                                                                         implementation-resources ;
                                                                                 beta =
@@ -159,7 +159,7 @@
                                                                                         in builtins.mapAttrs mapper configuration ;
                                                                                 z =
                                                                                     ''
-                                                                                        ${ builtins.deepSeq alpha ( builtins.concatStringsSep "\n" ( builtins.attrValues alpha ) )
+                                                                                        ${ builtins.deepSeq alpha ( builtins.concatStringsSep "\n" ( builtins.attrValues alpha ) ) }
                                                                                     '' ;
                                                                                 in
                                                                                     ''
