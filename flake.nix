@@ -77,7 +77,7 @@
                                                                                                             let
                                                                                                                 resource-name = builtins.concatStringsSep "" [ "A" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
                                                                                                                 variable-name = builtins.concatStringsSep "" [ "$" "{" resource-name "}" ] ;
-                                                                                                                in string path ( builtins.concatStringsSep "/" [ mount "stage" variable-name ( value null ) ] ) ;
+                                                                                                                in string path "LAMBA" ;
                                                                                                     list = concat.list ;
                                                                                                     null = path : value : builtins.throw "ssh configuration is misconfigured at ${ builtins.toJSON path }  null values are not allowed" ;
                                                                                                     path = path : value : string path ( builtins.toString value ) false ;
@@ -162,9 +162,6 @@
                                                                                                                     in "  ${ string }" ;
                                                                                                         in builtins.concatStringsSep "\n" ( builtins.concatLists [ [ "Host ${ host }" ] ( builtins.attrValues ( builtins.mapAttrs mapper configuration ) ) ] ) ;
                                                                                         in builtins.mapAttrs mapper configuration ;
-                                                                                z =
-                                                                                    ''
-                                                                                    '' ;
                                                                                 in
                                                                                     ''
                                                                                         mkdir --parents /mount/stage
