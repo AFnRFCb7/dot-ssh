@@ -158,7 +158,7 @@
                                                                                                                     path = [ host-name name ] ;
                                                                                                                     string =
                                                                                                                         ''
-                                                                                                                          ${ configuration-name }=${ builtins.concatStringsSep "" [ "$" "{" value "}" ] }
+                                                                                                                          ${ configuration-name }=${ builtins.concatStringsSep "" [ "$" "{" value-name "}" ] }
                                                                                                                         '' ;
                                                                                                                     value-name = builtins.concatStringsSep "" [ "B" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
                                                                                                                     in "  ${ string }" ;
