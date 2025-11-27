@@ -34,8 +34,8 @@
                                                                                                             in
                                                                                                                 [
                                                                                                                     ''${ resource-name }=${ resource-name }=${ value primary }''
-                                                                                                                    ''root-resource ${ resource-name }''
-                                                                                                                    ''ln --symbolic ${ resource-name } /mount/stage/${ resource-name }''
+                                                                                                                    ''root-resource "$${ resource-name }"''
+                                                                                                                    ''ln --symbolic "$${ resource-name }" /mount/stage/${ resource-name }''
                                                                                                                     ''export ${ resource-name }''
                                                                                                                 ]
                                                                                                    else builtins.throw "ssh resources is wrongly nested.  values must be two levels deep, but ${ builtins.toJSON path } is ${ builtins.toString ( builtins.length path ) } levels deep." ;
