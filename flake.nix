@@ -58,9 +58,9 @@
                                                                                                         in
                                                                                                             if builtins.typeOf implementation-resources != "set" then builtins.throw "ssh configuration is wrongly nested.  resources must be a set"
                                                                                                             else if ! builtins.hasAttr host-name implementation-resources then builtins.throw "ssh configuration is wrongly nested.  resources must have ${ host-name }"
-                                                                                                            else if ! builtins.typeOf host != "set" then builtins.throw "ssh configuration is wrongly nested.  host ${ host-name } must be a set but is a ${ builtins.typeOf host }"
+                                                                                                            else if builtins.typeOf host != "set" then builtins.throw "ssh configuration is wrongly nested.  host ${ host-name } must be a set but is a ${ builtins.typeOf host }"
                                                                                                             else if ! builtins.hasAttr attribute-name host then builtins.throw "ssh configuration is wrongly nested.  host ${ host-name } must have ${ attribute-name }"
-                                                                                                            else if ! builtins.typeOf attribute != "lambda" then builtins.throw "ssh configuration is wrongly nested.  attribute ${ attribute-name } of host ${ host-name } must be a lambda"
+                                                                                                            else if builtins.typeOf attribute != "lambda" then builtins.throw "ssh configuration is wrongly nested.  attribute ${ attribute-name } of host ${ host-name } must be a lambda"
                                                                                                            else [ ''export ${ value-name }=${ value }'' ]
                                                                                                 else
                                                                                                     let
