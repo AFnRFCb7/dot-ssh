@@ -37,7 +37,6 @@
                                                                                                                     ''${ resource-name }=${ value primary }''
                                                                                                                     ''root-resource "${ variable-name }"''
                                                                                                                     ''ln --symbolic "${ variable-name }" /mount/stage/${ resource-name }''
-                                                                                                                    ''export ${ resource-name }''
                                                                                                                 ]
                                                                                                    else builtins.throw "ssh resources is wrongly nested.  values must be two levels deep, but ${ builtins.toJSON path } is ${ builtins.toString ( builtins.length path ) } levels deep." ;
                                                                                             list = concat.list ;
