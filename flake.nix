@@ -14,7 +14,7 @@
                                         in
                                             {
                                                 init =
-                                                    { mount , pkgs , resources } :
+                                                    { mount , pkgs , resources } @primary :
                                                         let
                                                             application =
                                                                 pkgs.writeShellApplication
@@ -33,7 +33,7 @@
                                                                                                             resource-name = builtins.concatStringsSep "" [ "A" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
                                                                                                             in
                                                                                                                 [
-                                                                                                                    ''if "$HAS_STANDARD_INPUT" ; then ${ resource-name }= ; else ${ resource-name }= ; fi''
+                                                                                                                    ''if "$HAS_STANDARD_INPUT" ; then ${ resource-name }= ; else ${ resource-name }=${ value primary } ; fi''
                                                                                                                     # ''if "$HAS_STANDARD_INPUT" ; then ${ resource-name }=${ value ( setup : ''echo "$STANDARD_INPUT" | ${ setup } "$@"'' ) } ; else ${ resource-name }=${ value ( setup : ''${ setup } "$@"'' ) } ; fi''
                                                                                                                     # ''root-resource ${ resource-name }''
                                                                                                                     # ''ln --symbolic ${ resource-name } /mount/stage/${ resource-name }''
