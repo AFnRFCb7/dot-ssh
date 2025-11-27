@@ -39,7 +39,7 @@
                                                                                                                 ]
                                                                                                     else builtins.throw "ssh resources is wrongly nested.  values must be two levels deep, but ${ builtins.toJSON path } is ${ builtins.toString ( builtins.length path ) } levels deep." ;
                                                                                             list = concat.list ;
-                                                                                            set = concat.set ;
+                                                                                            set = [ ] ; # concat.set ;
                                                                                         }
                                                                                         implementation-resources ;
                                                                                 beta =
@@ -157,7 +157,6 @@
                                                                                                                     in "  ${ string }" ;
                                                                                                         in builtins.concatStringsSep "\n" ( builtins.concatLists [ [ "Host ${ host }" ] ( builtins.attrValues ( builtins.mapAttrs mapper configuration ) ) ] ) ;
                                                                                         in builtins.mapAttrs mapper configuration ;
-                                                                                xxx = ''${ builtins.concatStringsSep "\n" ( builtins.attrValues alpha ) }"'' ;
                                                                                 in
                                                                                     ''
                                                                                         mkdir --parents /mount/stage
