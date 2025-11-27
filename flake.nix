@@ -33,7 +33,7 @@
                                                                                                             resource-name = builtins.concatStringsSep "" [ "A" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
                                                                                                             in
                                                                                                                 [
-                                                                                                                    ''if "$HAS_STANDARD_INPUT" ; then ${ resource-name }=${ value ( setup : ''echo "$STANDARD_INPUT" | ${ setup } "$@"'' ) } ; else ${ resource-name }=${ value ( setup : ''${ setup } "$@"'' ) } ; fi''
+                                                                                                                    # ''if "$HAS_STANDARD_INPUT" ; then ${ resource-name }=${ value ( setup : ''echo "$STANDARD_INPUT" | ${ setup } "$@"'' ) } ; else ${ resource-name }=${ value ( setup : ''${ setup } "$@"'' ) } ; fi''
                                                                                                                     # ''root-resource ${ resource-name }''
                                                                                                                     # ''ln --symbolic ${ resource-name } /mount/stage/${ resource-name }''
                                                                                                                 ]
@@ -173,7 +173,7 @@
                                                                                             STANDARD_INPUT="$( cat )" || failure ca6dd82a
                                                                                         fi
                                                                                         cat <<EOF
-                                                                                        ${ builtins.toJSON ( builtins.attrValues alpha ) }
+                                                                                        ${ builtins.toJSON ( alpha ) }
                                                                                         EOF
                                                                                     '' ;
                                                                     } ;
