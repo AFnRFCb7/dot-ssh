@@ -7,6 +7,7 @@
                 lib =
                     { failure , visitor } :
                         let
+                            _visitor = visitor ;
                             implementation =
                                 { configuration ? { } , resources ? { } } :
                                     let
@@ -23,8 +24,8 @@
                                                                         runtimeInputs = [ pkgs.coreutils pkgs.gettext ] ;
                                                                         text =
                                                                             let
-                                                                                alpha5 =
-                                                                                    visitor
+                                                                                alpha =
+                                                                                    _visitor
                                                                                         {
                                                                                             lambda =
                                                                                                 path : value :
