@@ -7,7 +7,6 @@
                 lib =
                     { failure , visitor } :
                         let
-                            _visitor = visitor ;
                             implementation =
                                 { configuration ? { } , resources ? { } } :
                                     let
@@ -25,7 +24,7 @@
                                                                         text =
                                                                             let
                                                                                 alpha =
-                                                                                    _visitor
+                                                                                    visitor
                                                                                         {
                                                                                             lambda =
                                                                                                 path : value :
@@ -39,7 +38,7 @@
                                                                                                                     # ''ln --symbolic ${ resource-name } /mount/stage/${ resource-name }''
                                                                                                                 ]
                                                                                                     else builtins.throw "ssh resources is wrongly nested.  values must be two levels deep, but ${ builtins.toJSON path } is ${ builtins.toString ( builtins.length path ) } levels deep." ;
-                                                                                            list = concat.list ;
+                                                                                            list = [ ] ; # concat.list ;
                                                                                             set = [ ] ; # concat.set ;
                                                                                         }
                                                                                         implementation-resources ;
