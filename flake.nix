@@ -160,9 +160,19 @@
                                                                                 in
                                                                                     ''
                                                                                         mkdir --parents /mount/stage
-                                                                                        cat <<EOF
-                                                                                        ${ builtins.toJSON ( alpha ) }
-                                                                                        EOF
+                                                                                        if [[ -t 0 ]]
+                                                                                        then
+                                                                                            # shellcheck disable=SC2034
+                                                                                            HAS_STANDARD_INPUT=false
+                                                                                            # shellcheck disable=SC2034
+                                                                                            STANDARD_INPUT=
+                                                                                        else
+                                                                                            # shellcheck disable=SC2034
+                                                                                            HAS_STANDARD_INPUT=true
+                                                                                            # shellcheck disable=SC2034
+                                                                                            STANDARD_INPUT="$( cat )" || failure ca6dd82a
+                                                                                        fi
+                                                                                        ${ builtins.concatStringSep "\n" ( builtins.attrValues ( builtins.deepSeq alpha ) ) }
                                                                                     '' ;
                                                                     } ;
                                                             init-resources = resources ;
