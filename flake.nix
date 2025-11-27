@@ -56,7 +56,7 @@
                                                                                                         in
                                                                                                             if builtins.typeOf implementation-resources != "set" then builtins.throw "ssh configuration is wrongly nested.  resources must be a set"
                                                                                                             else if ! builtins.hasAttr host-name implementation-resources then builtins.throw "ssh configuration is wrongly nested.  resources must have ${ host-name }"
-                                                                                                            else if builtins.typeOf host != "lambda" then builtins.throw "ssh configuration is wrongly nested.  host ${ builtins.toJSON path } must be a lambda"
+                                                                                                            else if builtins.typeOf host != "lambda" then builtins.throw "ssh configuration is wrongly nested.  host ${ builtins.toJSON path } must be a lambda but is a ${ builtins.typeOf host }"
                                                                                                             else [ ''export ${ value-name }=${ value }'' ]
                                                                                                 else
                                                                                                     let
