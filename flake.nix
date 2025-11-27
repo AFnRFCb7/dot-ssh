@@ -33,10 +33,9 @@
                                                                                                             resource-name = builtins.concatStringsSep "" [ "A" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
                                                                                                             in
                                                                                                                 [
-                                                                                                                    ''if "$HAS_STANDARD_INPUT" ; then ${ resource-name }= ; else ${ resource-name }=${ value primary } ; fi''
-                                                                                                                    # ''if "$HAS_STANDARD_INPUT" ; then ${ resource-name }=${ value ( setup : ''echo "$STANDARD_INPUT" | ${ setup } "$@"'' ) } ; else ${ resource-name }=${ value ( setup : ''${ setup } "$@"'' ) } ; fi''
-                                                                                                                    # ''root-resource ${ resource-name }''
-                                                                                                                    # ''ln --symbolic ${ resource-name } /mount/stage/${ resource-name }''
+                                                                                                                    ''${ resource-name }= ; else ${ resource-name }=${ value primary }''
+                                                                                                                    ''root-resource ${ resource-name }''
+                                                                                                                    ''ln --symbolic ${ resource-name } /mount/stage/${ resource-name }''
                                                                                                                 ]
                                                                                                    else builtins.throw "ssh resources is wrongly nested.  values must be two levels deep, but ${ builtins.toJSON path } is ${ builtins.toString ( builtins.length path ) } levels deep." ;
                                                                                             list = concat.list ;
@@ -161,18 +160,6 @@
                                                                                 in
                                                                                     ''
                                                                                         mkdir --parents /mount/stage
-                                                                                        if [[ -t 0 ]]
-                                                                                        then
-                                                                                            # shellcheck disable=SC2034
-                                                                                            HAS_STANDARD_INPUT=false
-                                                                                            # shellcheck disable=SC2034
-                                                                                            STANDARD_INPUT=
-                                                                                        else
-                                                                                            # shellcheck disable=SC2034
-                                                                                            HAS_STANDARD_INPUT=true
-                                                                                            # shellcheck disable=SC2034
-                                                                                            STANDARD_INPUT="$( cat )" || failure ca6dd82a
-                                                                                        fi
                                                                                         cat <<EOF
                                                                                         ${ builtins.toJSON ( alpha ) }
                                                                                         EOF
