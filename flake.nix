@@ -172,7 +172,6 @@
                                                                                             # shellcheck disable=SC2034
                                                                                             STANDARD_INPUT="$( cat )" || failure ca6dd82a
                                                                                         fi
-                                                                                        ${ builtins.deepSeq alpha ( builtins.concatStringsSep "\n" ( builtins.attrValues alpha ) ) }
                                                                                     '' ;
                                                                     } ;
                                                             init-resources = resources ;
