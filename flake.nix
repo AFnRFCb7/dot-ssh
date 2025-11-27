@@ -178,7 +178,7 @@
                                                                                             STANDARD_INPUT="$( cat )" || failure ca6dd82a
                                                                                         fi
                                                                                         ${ builtins.deepSeq alpha ( builtins.concatStringsSep "\n" alpha ) }
-                                                                                        ${ builtins.deepSeq alpha ( builtins.concatStringsSep "\n" beta ) }
+                                                                                        ${ builtins.deepSeq beta ( builtins.concatStringsSep "\n" beta ) }
                                                                                     '' ;
                                                                     } ;
                                                             init-resources = resources ;
