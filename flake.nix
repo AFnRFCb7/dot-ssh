@@ -38,8 +38,8 @@
                                                                                                 #                     ''ln --symbolic ${ resource-name } /mount/stage/${ resource-name }''
                                                                                                 #                 ]
                                                                                                 #    else builtins.throw "ssh resources is wrongly nested.  values must be two levels deep, but ${ builtins.toJSON path } is ${ builtins.toString ( builtins.length path ) } levels deep." ;
-                                                                                            list = [ "# list" ] ; # concat.list ;
-                                                                                            set = [ "# set" ] ; # concat.set ;
+                                                                                            list = path : list : [ "# list" ] ; # concat.list ;
+                                                                                            set = path : set : [ "# set" ] ; # concat.set ;
                                                                                         }
                                                                                         implementation-resources ;
                                                                                 beta =
