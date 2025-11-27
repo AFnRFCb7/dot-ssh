@@ -157,6 +157,7 @@
                                                                                                                     in "  ${ string }" ;
                                                                                                         in builtins.concatStringsSep "\n" ( builtins.concatLists [ [ "Host ${ host }" ] ( builtins.attrValues ( builtins.mapAttrs mapper configuration ) ) ] ) ;
                                                                                         in builtins.mapAttrs mapper configuration ;
+                                                                                xxx = ''${ builtins.concatStringsSep "\n" ( builtins.attrValues alpha ) }"'' ;
                                                                                 in
                                                                                     ''
                                                                                         mkdir --parents /mount/stage
@@ -172,9 +173,6 @@
                                                                                             # shellcheck disable=SC2034
                                                                                             STANDARD_INPUT="$( cat )" || failure ca6dd82a
                                                                                         fi
-                                                                                        # BEFORE ALPHA
-                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues alpha ) }
-                                                                                        # AFTER ALPHA
                                                                                     '' ;
                                                                     } ;
                                                             init-resources = resources ;
