@@ -65,7 +65,6 @@
                                                                                                 else
                                                                                                     let
                                                                                                         value-name = builtins.concatStringsSep "" [ "B" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
-                                                                                                        in [ ''${ value-name }=${ value }'' ''export ${ value-name }'' ] ;
                                                                                         in
                                                                                             visitor
                                                                                                 {
