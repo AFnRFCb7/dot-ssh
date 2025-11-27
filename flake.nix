@@ -33,6 +33,10 @@
                                                                                                             resource-name = builtins.concatStringsSep "" [ "A" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
                                                                                                             in
                                                                                                                 [
+                                                                                                                    ''if $HAS_STANDARD_INPUT''
+                                                                                                                    ''then''
+                                                                                                                    ''  ${resource-name }=''
+                                                                                                                    ''fi''
                                                                                                                     # ''if "$HAS_STANDARD_INPUT" ; then ${ resource-name }=${ value ( setup : ''echo "$STANDARD_INPUT" | ${ setup } "$@"'' ) } ; else ${ resource-name }=${ value ( setup : ''${ setup } "$@"'' ) } ; fi''
                                                                                                                     # ''root-resource ${ resource-name }''
                                                                                                                     # ''ln --symbolic ${ resource-name } /mount/stage/${ resource-name }''
