@@ -195,7 +195,8 @@
                                             implementation-resources ,
                                             init-resources ? null ,
                                             mount ? null ,
-                                            pkgs ? null
+                                            pkgs ? null ,
+                                            wrap ? "c1ec1e6a"
                                         } :
                                             pkgs.stdenv.mkDerivation
                                                 {
