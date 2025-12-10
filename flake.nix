@@ -14,7 +14,7 @@
                                         in
                                             {
                                                 init =
-                                                    { mount , pkgs , resources } @primary :
+                                                    { mount , pkgs , resources , wrap } @primary :
                                                         let
                                                             application =
                                                                 pkgs.writeShellApplication
