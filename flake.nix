@@ -61,7 +61,7 @@
                                                                                                             else if builtins.typeOf host != "set" then builtins.throw "ssh configuration is wrongly nested.  host ${ host-name } must be a set but is a ${ builtins.typeOf host }"
                                                                                                             else if ! builtins.hasAttr attribute-name host then builtins.throw "ssh configuration is wrongly nested.  host ${ host-name } must have ${ attribute-name }"
                                                                                                             else if builtins.typeOf attribute != "lambda" then builtins.throw "ssh configuration is wrongly nested.  attribute ${ attribute-name } of host ${ host-name } must be a lambda"
-                                                                                                            else [ ''${ value-name }="${ value }"'' ''export ${ value-name }'' ]
+                                                                                                            else [ ''${ value-name }="${ value }"'' ]
                                                                                                 else
                                                                                                     let
                                                                                                         value-name = builtins.concatStringsSep "" [ "B" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
