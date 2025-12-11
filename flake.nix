@@ -14,7 +14,7 @@
                                         in
                                             {
                                                 init =
-                                                    { mount , pkgs , resources , wrap } @primary :
+                                                    { mount , pkgs , resources , root , wrap } @primary :
                                                         let
                                                             application =
                                                                 pkgs.writeShellApplication
@@ -213,6 +213,7 @@
                                             init-resources ? null ,
                                             mount ? null ,
                                             pkgs ? null ,
+                                            root ? "c66543e6" ,
                                             wrap ? "c1ec1e6a"
                                         } :
                                             pkgs.stdenv.mkDerivation
@@ -231,7 +232,7 @@
                                                                         runtimeInputs = [ pkgs.coreutils failure ] ;
                                                                         text =
                                                                             let
-                                                                                init = instance.init { mount = mount ; pkgs = pkgs ; resources = init-resources ; wrap = wrap ; } ;
+                                                                                init = instance.init { mount = mount ; pkgs = pkgs ; resources = init-resources ; root = root ; wrap = wrap ; } ;
                                                                                 instance = implementation { configuration = configuration ; resources = implementation-resources ; } ;
                                                                                 in
                                                                                     ''
