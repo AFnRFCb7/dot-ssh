@@ -101,9 +101,12 @@
                                                                                         in
                                                                                             visitor
                                                                                                 {
+                                                                                                    bool = string ;
+                                                                                                    float = string ;
                                                                                                     int = string ;
                                                                                                     lambda = string ;
                                                                                                     list = concat.list ;
+                                                                                                    null = string ;
                                                                                                     set = concat.set ;
                                                                                                     string = string ;
                                                                                                 }
