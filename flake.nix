@@ -97,7 +97,7 @@
                                                                                                 let
                                                                                                     resource-name = builtins.concatStringsSep "" [ "A" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
                                                                                                     variable-name = builtins.concatStringsSep "" [ "$" resource-name ] ;
-                                                                                                    in [ "--set ${ resource-name } ${ variable-name }" ] ;
+                                                                                                    in [ "--set ${ resource-name } \"${ variable-name }\"" ] ;
                                                                                         in
                                                                                             visitor
                                                                                                 {
