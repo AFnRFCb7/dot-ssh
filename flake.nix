@@ -14,7 +14,7 @@
                                         in
                                             {
                                                 init =
-                                                    { mount , pkgs , resources , wrap } @primary :
+                                                    { mount , pkgs , resources , root , wrap } @primary :
                                                         let
                                                             application =
                                                                 pkgs.writeShellApplication
@@ -90,6 +90,24 @@
                                                                                         list = path : list : if builtins.length path > 2 then builtins.throw "ssh configuration is wrongly nested at ${ builtins.toJSON path }.  paths may be no deeper than 2 but this is ${ builtins.toString ( builtins.length path ) }" else builtins.concatLists list ;
                                                                                         set = path : set : if builtins.length path > 2 then builtins.throw "ssh configuration is wrongly nested at ${ builtins.toJSON path }.  set paths may be no deeper than 2 but this is ${ builtins.toString ( builtins.length path ) }" else builtins.concatLists ( builtins.attrValues set ) ;
                                                                                     } ;
+                                                                                delta =
+                                                                                    let
+                                                                                        string =
+                                                                                            path : value :
+                                                                                                let
+                                                                                                    resource-name = builtins.concatStringsSep "" [ "A" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
+                                                                                                    variable-name = builtins.concatStringsSep "" [ "$" resource-name ] ;
+                                                                                                    in [ "--set ${ resource-name } ${ variable-name }" ] ;
+                                                                                        in
+                                                                                            visitor
+                                                                                                {
+                                                                                                    int = string ;
+                                                                                                    lambda = string ;
+                                                                                                    list = concat.list ;
+                                                                                                    set = concat.set ;
+                                                                                                    string = string ;
+                                                                                                }
+                                                                                            configuration ;
                                                                                 gamma =
                                                                                     let
                                                                                         mapper =
@@ -178,8 +196,7 @@
                                                                                         fi
                                                                                         ${ builtins.concatStringsSep "\n" alpha }
                                                                                         ${ builtins.concatStringsSep "\n" beta }
-                                                                                        envsubst < ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.attrValues gamma ) ) } > /mount/config
-                                                                                        chmod 0400 /mount/config
+                                                                                        wrap ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.attrValues gamma ) ) } config 0400 ${ builtins.concatStringsSep " " delta }
                                                                                     '' ;
                                                                     } ;
                                                             init-resources = resources ;
@@ -196,6 +213,7 @@
                                             init-resources ? null ,
                                             mount ? null ,
                                             pkgs ? null ,
+                                            root ? "c66543e6" ,
                                             wrap ? "c1ec1e6a"
                                         } :
                                             pkgs.stdenv.mkDerivation
@@ -214,7 +232,7 @@
                                                                         runtimeInputs = [ pkgs.coreutils failure ] ;
                                                                         text =
                                                                             let
-                                                                                init = instance.init { mount = mount ; pkgs = pkgs ; resources = init-resources ; wrap = wrap ; } ;
+                                                                                init = instance.init { mount = mount ; pkgs = pkgs ; resources = init-resources ; root = root ; wrap = wrap ; } ;
                                                                                 instance = implementation { configuration = configuration ; resources = implementation-resources ; } ;
                                                                                 in
                                                                                     ''
