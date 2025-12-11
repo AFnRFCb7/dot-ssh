@@ -20,7 +20,7 @@
                                                                 pkgs.writeShellApplication
                                                                     {
                                                                         name = "init" ;
-                                                                        runtimeInputs = [ pkgs.coreutils pkgs.gettext ] ;
+                                                                        runtimeInputs = [ pkgs.coreutils pkgs.gettext root ] ;
                                                                         text =
                                                                             let
                                                                                 alpha =
@@ -35,7 +35,7 @@
                                                                                                             in
                                                                                                                 [
                                                                                                                     ''${ resource-name }=${ value primary }''
-                                                                                                                    ''root-resource "${ variable-name }"''
+                                                                                                                    ''root "${ variable-name }"''
                                                                                                                     ''ln --symbolic "${ variable-name }" /mount/stage/${ resource-name }''
                                                                                                                 ]
                                                                                                    else builtins.throw "ssh resources is wrongly nested.  values must be two levels deep, but ${ builtins.toJSON path } is ${ builtins.toString ( builtins.length path ) } levels deep." ;
