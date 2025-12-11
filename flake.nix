@@ -77,7 +77,7 @@
                                                                                                             let
                                                                                                                 resource-name = builtins.concatStringsSep "" [ "A" ( builtins.hashString "sha512" ( builtins.toJSON path ) ) ] ;
                                                                                                                 variable-name = builtins.concatStringsSep "" [ "$" "{" resource-name "}" ] ;
-                                                                                                                in string path ( builtins.concatStringsSep "/" [ variable-name ( value null ) ] ) true ;
+                                                                                                                in string path ( builtins.concatStringsSep "/" [ variable-name ( value { mount = mount ; pkgs = pkgs ; resources = resources ; root = root ; wrap = wrap ; } ) ] ) true ;
                                                                                                     list = concat.list ;
                                                                                                     null = path : value : builtins.throw "ssh configuration is misconfigured at ${ builtins.toJSON path }  null values are not allowed" ;
                                                                                                     path = path : value : string path ( builtins.toString value ) false ;
