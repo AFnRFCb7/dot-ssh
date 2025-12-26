@@ -20,7 +20,7 @@
                                                                 pkgs.writeShellApplication
                                                                     {
                                                                         name = "init" ;
-                                                                        runtimeInputs = [ pkgs.coreutils pkgs.gettext root ] ;
+                                                                        runtimeInputs = [ pkgs.coreutils pkgs.gettext root wrap pkgs.which ] ;
                                                                         text =
                                                                             let
                                                                                 alpha =
@@ -199,7 +199,14 @@
                                                                                         fi
                                                                                         ${ builtins.concatStringsSep "\n" alpha }
                                                                                         ${ builtins.concatStringsSep "\n" beta }
+                                                                                        # shellcheck disable=SC2129
+                                                                                        echo 5c0224be >> /tmp/DEBUG
+                                                                                        # shellcheck disable=SC2129
+                                                                                        ${ pkgs.which }/bin/which wrap >> /tmp/DEBUG
+                                                                                        # shellcheck disable=SC2129
+                                                                                        echo wrap ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.attrValues gamma ) ) } config 0400 ${ builtins.concatStringsSep " " delta } >> /tmp/DEBUG
                                                                                         wrap ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.attrValues gamma ) ) } config 0400 ${ builtins.concatStringsSep " " delta }
+                                                                                        echo e99989be >> /tmp/DEBUG
                                                                                     '' ;
                                                                     } ;
                                                             init-resources = resources ;
