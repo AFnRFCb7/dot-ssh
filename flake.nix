@@ -20,7 +20,7 @@
                                                                 pkgs.writeShellApplication
                                                                     {
                                                                         name = "init" ;
-                                                                        runtimeInputs = [ pkgs.coreutils pkgs.gettext root ] ;
+                                                                        runtimeInputs = [ pkgs.coreutils pkgs.gettext root wrap ] ;
                                                                         text =
                                                                             let
                                                                                 alpha =
