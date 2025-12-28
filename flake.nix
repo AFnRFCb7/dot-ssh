@@ -20,7 +20,7 @@
                                                                 pkgs.writeShellApplication
                                                                     {
                                                                         name = "init" ;
-                                                                        runtimeInputs = [ pkgs.coreutils pkgs.gettext root wrap ] ;
+                                                                        runtimeInputs = [ pkgs.coreutils pkgs.gettext root wrap pkgs.which ] ;
                                                                         text =
                                                                             let
                                                                                 alpha =
@@ -200,8 +200,8 @@
                                                                                         ${ builtins.concatStringsSep "\n" alpha }
                                                                                         ${ builtins.concatStringsSep "\n" beta }
                                                                                         echo 5c0224be >> /tmp/DEBUG
-                                                                                        ${ pkgs.which }/bin/which wrap
-                                                                                        echo wrap ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.attrValues gamma ) ) } config 0400 ${ builtins.concatStringsSep " " delta }
+                                                                                        ${ pkgs.which }/bin/which wrap >> /tmp/DEBUG
+                                                                                        echo wrap ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.attrValues gamma ) ) } config 0400 ${ builtins.concatStringsSep " " delta } >> /tmp/DEBUG
                                                                                         wrap ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.attrValues gamma ) ) } config 0400 ${ builtins.concatStringsSep " " delta }
                                                                                         echo e99989be >> /tmp/DEBUG
                                                                                     '' ;
