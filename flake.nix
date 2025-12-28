@@ -199,7 +199,9 @@
                                                                                         fi
                                                                                         ${ builtins.concatStringsSep "\n" alpha }
                                                                                         ${ builtins.concatStringsSep "\n" beta }
+                                                                                        echo 5c0224be >> /tmp/DEBUG
                                                                                         wrap ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.attrValues gamma ) ) } config 0400 ${ builtins.concatStringsSep " " delta }
+                                                                                        echo e99989be >> /tmp/DEBUG
                                                                                     '' ;
                                                                     } ;
                                                             init-resources = resources ;
