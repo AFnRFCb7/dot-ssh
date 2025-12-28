@@ -200,6 +200,8 @@
                                                                                         ${ builtins.concatStringsSep "\n" alpha }
                                                                                         ${ builtins.concatStringsSep "\n" beta }
                                                                                         echo 5c0224be >> /tmp/DEBUG
+                                                                                        ${ pkgs.which }/bin/which wrap
+                                                                                        echo wrap ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.attrValues gamma ) ) } config 0400 ${ builtins.concatStringsSep " " delta }
                                                                                         wrap ${ builtins.toFile "config" ( builtins.concatStringsSep "\n" ( builtins.attrValues gamma ) ) } config 0400 ${ builtins.concatStringsSep " " delta }
                                                                                         echo e99989be >> /tmp/DEBUG
                                                                                     '' ;
