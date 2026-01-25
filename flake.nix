@@ -214,9 +214,10 @@
                                             expected ,
                                             implementation-resources ,
                                             init-resources ? null ,
-                                            mount ? null ,
+                                            pid ? "adb04764" ,
                                             pkgs ? null ,
                                             root ? "c66543e6" ,
+                                            sequential ? "50a18f24" ,
                                             wrap ? "c1ec1e6a"
                                         } :
                                             pkgs.stdenv.mkDerivation
@@ -235,7 +236,7 @@
                                                                         runtimeInputs = [ pkgs.coreutils failure ] ;
                                                                         text =
                                                                             let
-                                                                                init = instance.init { mount = mount ; pkgs = pkgs ; resources = init-resources ; root = root ; wrap = wrap ; } ;
+                                                                                init = instance.init { pid = pid ; pkgs = pkgs ; resources = init-resources ; root = root ; sequential = sequential ; wrap = wrap ; } ;
                                                                                 instance = implementation { configuration = configuration ; resources = implementation-resources ; } ;
                                                                                 in
                                                                                     ''
