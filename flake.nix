@@ -14,7 +14,7 @@
                                         in
                                             {
                                                 init =
-                                                    { pid , pkgs , resources , root , sequential , wrap } @primary :
+                                                    { failure , pid , pkgs , resources , root , sequential , wrap } @primary :
                                                         let
                                                             application =
                                                                 pkgs.writeShellApplication
@@ -236,7 +236,7 @@
                                                                         runtimeInputs = [ pkgs.coreutils failure ] ;
                                                                         text =
                                                                             let
-                                                                                init = instance.init { pid = pid ; pkgs = pkgs ; resources = init-resources ; root = root ; sequential = sequential ; wrap = wrap ; } ;
+                                                                                init = instance.init { failure = failure ; pid = pid ; pkgs = pkgs ; resources = init-resources ; root = root ; sequential = sequential ; wrap = wrap ; } ;
                                                                                 instance = implementation { configuration = configuration ; resources = implementation-resources ; } ;
                                                                                 in
                                                                                     ''
