@@ -14,7 +14,7 @@
                                         in
                                             {
                                                 init =
-                                                    { failure , pid , pkgs , resources , root , sequential , wrap } @primary :
+                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } @primary :
                                                         let
                                                             application =
                                                                 pkgs.writeShellApplication
@@ -217,6 +217,7 @@
                                             pid ? "adb04764" ,
                                             pkgs ? null ,
                                             root ? "c66543e6" ,
+                                            seed ? "c61e004d" ,
                                             sequential ? "50a18f24" ,
                                             wrap ? "c1ec1e6a"
                                         } :
@@ -236,7 +237,7 @@
                                                                         runtimeInputs = [ pkgs.coreutils failure ] ;
                                                                         text =
                                                                             let
-                                                                                init = instance.init { failure = failure ; pid = pid ; pkgs = pkgs ; resources = init-resources ; root = root ; sequential = sequential ; wrap = wrap ; } ;
+                                                                                init = instance.init { failure = failure ; pid = pid ; pkgs = pkgs ; resources = init-resources ; root = root ; seed = seed ; sequential = sequential ; wrap = wrap ; } ;
                                                                                 instance = implementation { configuration = configuration ; resources = implementation-resources ; } ;
                                                                                 in
                                                                                     ''
